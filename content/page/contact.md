@@ -7,4 +7,4 @@ title: My Contact Info
 
 ## Email
 
-wspagnola(at)gmail.com
+wspagnola@nyu.edu

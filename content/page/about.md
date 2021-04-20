@@ -7,9 +7,8 @@ description = "Things about me."
 
 ## About
 
-Hello, my name is William (also Bill) Spagnola and  I'm passionate about exploring the intersection of data science and social science research. 
-interested in finding solutions that statistics/data analysis can solve real-world problems. 
+Hello, my name is William (also Bill) Spagnola, and I'm passionate about exploring the intersection of data science and social science research. I enjoy using statistics/data analysis to solve real-world problems. 
 
 ## Organization
 
-I'm currently working for the Research Alliance for New York Schools studies.  My current projects include implementing a regression discontinuity design to identify the impact of Career Technical Education (CTE) on the graduation outcomes NYC high school students and developing a survey to evaluate the benefits of an after-school program designed to increase STEM awareness/engagement among disadvantaged students.  
+I'm currently working for the Research Alliance for New York City Schools.  My current projects include implementing a regression discontinuity design to identify the impact of Career Technical Education (CTE) on the graduation outcomes NYC high school students and developing a survey to evaluate the benefits of an after-school program designed to increase STEM awareness/engagement among disadvantaged students.  
