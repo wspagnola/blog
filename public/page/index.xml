@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Pages on William Spagnola</title>
+    <link>/page/</link>
+    <description>Recent content in Pages on William Spagnola</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>William Spagnola</copyright>
+    <lastBuildDate>Fri, 03 Apr 2015 02:13:50 +0000</lastBuildDate><atom:link href="/page/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>About</title>
+      <link>/page/about/</link>
+      <pubDate>Fri, 03 Apr 2015 02:13:50 +0000</pubDate>
+      
+      <guid>/page/about/</guid>
+      <description>About Hello, my name is William (also Bill) Spagnola, and I&amp;rsquo;m passionate about exploring the intersection of data science and social science research. I enjoy using statistics/data analysis to solve real-world problems.
+Organization I&amp;rsquo;m currently working for the Research Alliance for New York City Schools. My current projects include implementing a regression discontinuity design to identify the impact of Career Technical Education (CTE) on the graduation outcomes NYC high school students and developing a survey to evaluate the benefits of an after-school program designed to increase STEM awareness/engagement among disadvantaged students.</description>
+    </item>
+    
+    <item>
+      <title>My Contact Info</title>
+      <link>/page/contact/</link>
+      <pubDate>Fri, 03 Apr 2015 02:13:50 +0000</pubDate>
+      
+      <guid>/page/contact/</guid>
+      <description>Email wspagnola@nyu.edu</description>
+    </item>
+    
+    <item>
+      <title>About</title>
+      <link>/page/main/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/page/main/</guid>
+      <description>Main Page Main page is under construction</description>
+    </item>
+    
+  </channel>
+</rss>

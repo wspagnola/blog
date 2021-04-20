@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>William Spagnola</title>
+    <link>/</link>
+    <description>Recent content on William Spagnola</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>William Spagnola</copyright>
+    <lastBuildDate>Tue, 20 Apr 2021 00:00:00 +0000</lastBuildDate><atom:link href="/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Avoiding Flame Wars</title>
+      <link>/2021/04/20/2021-04-20-avoiding-flame-wars/</link>
+      <pubDate>Tue, 20 Apr 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/2021/04/20/2021-04-20-avoiding-flame-wars/</guid>
+      <description>Avoiding Flame Wars Before my life as a statistician/data analyst, I was a special education teacher in the Bronx with an undergraduate degree in English with a Spanish minor. At the time, I viewed the worlds of math and science as free from the subjective/emotional debates waged within the liberal arts. Little did I know, that turf wars seem to be endemic to all fields. During my graduate studies in statistics, I discovered that there were even intense disagreements about the fundamental nature of probability.</description>
+    </item>
+    
+    <item>
+      <title>Starting a blog</title>
+      <link>/2021/04/17/2021-04-17-starting-a-blog/</link>
+      <pubDate>Sat, 17 Apr 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/2021/04/17/2021-04-17-starting-a-blog/</guid>
+      <description>This is my first attempt at starting a statistics/data science blog. I hope to work on the following topics:
+Potential List of Blog Topics  Statistics/Causal Inference through simulation My learning process as I explore new packages, programming functions Descriptions of the data analysis/machine learning projects in my Github Repo Interesting statistics papers as well as statistical topics trending on social media Tutorials of basic programming, statistical/machine learning concepts  My hope is that as I continue to write, I&amp;rsquo;ll get a better idea of which topics I would like to focus on.</description>
+    </item>
+    
+    <item>
+      <title>About</title>
+      <link>/page/about/</link>
+      <pubDate>Fri, 03 Apr 2015 02:13:50 +0000</pubDate>
+      
+      <guid>/page/about/</guid>
+      <description>About Hello, my name is William (also Bill) Spagnola, and I&amp;rsquo;m passionate about exploring the intersection of data science and social science research. I enjoy using statistics/data analysis to solve real-world problems.
+Organization I&amp;rsquo;m currently working for the Research Alliance for New York City Schools. My current projects include implementing a regression discontinuity design to identify the impact of Career Technical Education (CTE) on the graduation outcomes NYC high school students and developing a survey to evaluate the benefits of an after-school program designed to increase STEM awareness/engagement among disadvantaged students.</description>
+    </item>
+    
+    <item>
+      <title>My Contact Info</title>
+      <link>/page/contact/</link>
+      <pubDate>Fri, 03 Apr 2015 02:13:50 +0000</pubDate>
+      
+      <guid>/page/contact/</guid>
+      <description>Email wspagnola@nyu.edu</description>
+    </item>
+    
+    <item>
+      <title>About</title>
+      <link>/page/main/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/page/main/</guid>
+      <description>Main Page Main page is under construction</description>
+    </item>
+    
+  </channel>
+</rss>
