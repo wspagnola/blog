@@ -1,0 +1,231 @@
+---
+title: Unionization and NAEP Data
+author: R package build
+date: '2021-05-17'
+slug: unionization-and-naep-data
+categories: []
+tags: []
+description: ''
+---
+
+<script src="{{< blogdown/postref >}}index_files/header-attrs/header-attrs.js"></script>
+
+
+<div id="introduction" class="section level1">
+<h1>Introduction</h1>
+<p>As a former teacher, I’m often intrigued by the way in which education issues provoke such strong feelings among non-educators. Teacher unions tend to elicit particularly strong opinions.</p>
+<p>Since so many people have strong opinions about unions, I decided to perform a state-level exploratory analysis of the relationship between test scores and unionization rates.</p>
+</div>
+<div id="where-did-i-find-test-scoress" class="section level1">
+<h1>Where Did I Find Test Scores?s</h1>
+<div id="naep" class="section level3">
+<h3>NAEP</h3>
+<p>I used NAEP data for the state-level math and reading scores.<br />
+<a href="https://nces.ed.gov/nationsreportcard/about/">NAEP</a> stands for National Assessment of Education Progress. It is administered by the NCES (National Center for Education Statistics ) to students across the United States. It is often referred to as the “Nation’s Report Card” for several reasons:</p>
+<ol style="list-style-type: decimal">
+<li>It is generally considered to be high quality</li>
+<li>It has been administered every few years since 1969.</li>
+<li>Usnlike high stakes exams, the same test is administered across the nation.</li>
+</ol>
+</div>
+<div id="why-focus-on-8th-grade-test-scores" class="section level3">
+<h3>Why focus on 8th grade test scores?</h3>
+<p>Each assessment year, a representative sample of students from grades 4, 8, and 12 take the test. I focus on grade 8 instead of grade 12 because there is some concern that seniors do not take the test as seriously. (<a href="https://dianeravitch.net/2015/11/11/a-note-to-marc-tucker-why-i-disagree-with-your-analysis-of-naep-scores/">See here</a>). Consequently, grade 8 is the latest grade for which we ahve data before “senioritis” becomes a concern. I’m also focusing on math and ELA because those are the subjects education researchers tend to focus on although there are NAEP exams for other subjects as well.</p>
+</div>
+</div>
+<div id="standard-correlation-vs.-causation-caveat" class="section level1">
+<h1>Standard Correlation vs. Causation Caveat</h1>
+<p>These data are purely correlational. Any inferences made based these charts should be taken with a grain of salt.</p>
+</div>
+<div id="obtaining-the-data" class="section level1">
+<h1>Obtaining the Data</h1>
+<div id="unionization-data" class="section level3">
+<h3>Unionization Data</h3>
+<p>After a great deal of searching, I was able to find 2017-2018 state-level unionization rates from the <a href="https://nces.ed.gov/surveys/ntps/tables/ntps1718_20111201_t1s.asp">National Teacher and Principal Survey</a>.s
+Unfortunately, there was no data from Maryland or DC due to low response rates.</p>
+</div>
+<div id="naep-data" class="section level3">
+<h3>NAEP Data</h3>
+<p>The NAEP data was much easier to find. There is an easy-to-use <a href="https://www.nationsreportcard.gov/ndecore/xplore/NDE">data portal</a> on their website. You can simply select the year, grade-level, subject, and jurisdiction you are looking for. I used this tool to create two state-level datasets with the 2019 math and reading NAEP results.</p>
+</div>
+</div>
+<div id="visualizations" class="section level1">
+<h1>Visualizations</h1>
+<div id="reading-tests-and-unionization" class="section level2">
+<h2>Reading Tests and Unionization</h2>
+<p>I used ggplot to create a scatterplot of ELA NAEP scores over unionization rates by state. I used the geom_text_repel() function from ggrepel to ensure that there none of the labels overlap one another. Finally, I used geom_smooth to create a fitted OLS regression line.</p>
+<pre class="r"><code>ed_dta %&gt;% 
+  filter_all(~!is.na(.)) %&gt;% 
+  ggplot(aes(x=pct_union, y= naep_ela_2019, label = state)) +
+  geom_point() +
+  geom_text_repel(size = 2) +
+  geom_smooth(method = &#39;lm&#39;, 
+              se = FALSE, 
+              linetype = &#39;dashed&#39;, 
+              color = &#39;red&#39;, 
+              size = 0.5) +
+  theme_bw() +
+  theme(panel.grid = element_blank())+
+  scale_x_continuous(limits = c(0,100)) </code></pre>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/ela_union_plot-1.png" width="672" /></p>
+<p>Based on the graph, there may be a correlation between ELA NAEP and unionization although again. Of course,correlation is not causation!</p>
+<p>You could also possibly argue, however, that if we remove Massachusetts and the trend line, that there would be no clear positive relationship. Massachusetts has traditionally been the state with highest test scores and also happens to have a high unionization rate, as do most states in the northeastern United States.</p>
+<pre class="r"><code>cor(ed_dta$naep_ela_2019, ed_dta$pct_union, use = &#39;complete.obs&#39;)  %&gt;%  round(2)</code></pre>
+<pre><code>## [1] 0.32</code></pre>
+<p>The correlation between state-level NAEP reading scores and unionization is .32, which is weak to moderate.</p>
+<pre class="r"><code>fit &lt;- lm(naep_ela_2019 ~ pct_union, ed_dta)
+summary(fit)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = naep_ela_2019 ~ pct_union, data = ed_dta)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -11.5948  -2.3236   0.6235   3.0408   8.9896 
+## 
+## Coefficients:
+##              Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept) 258.09693    1.96410 131.408   &lt;2e-16 ***
+## pct_union     0.06393    0.02745   2.329   0.0242 *  
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 4.415 on 47 degrees of freedom
+##   (2 observations deleted due to missingness)
+## Multiple R-squared:  0.1034, Adjusted R-squared:  0.08437 
+## F-statistic: 5.423 on 1 and 47 DF,  p-value: 0.02422</code></pre>
+<p>The coefficient of unionization is statistically significant. Of course, this evidence is just correlational, so we shouldn’t overinterpret this result. For example, New England states tend to have both high ELA scores and high unionization rates. There could be a confounding variable that could explain why New England states have both high unionization and high reading test scores.</p>
+</div>
+<div id="math-tests-and-unionization" class="section level2">
+<h2>Math Tests and Unionization</h2>
+<p>I also plotted NAEP math scores over unionization. The correlation appears to be weaker based on the scatter plot.</p>
+<pre class="r"><code>ed_dta %&gt;% 
+  filter_all(~!is.na(.)) %&gt;% 
+  ggplot(aes(x=pct_union, y= naep_mth_2019, label = state)) +
+  geom_point() +
+  geom_text(position = position_dodge(width = 0.1), vjust = 2, size = 2) +
+  geom_smooth(method = &#39;lm&#39;, 
+              se = FALSE, 
+              linetype = &#39;dashed&#39;, 
+              color = &#39;red&#39;, 
+              size = 0.5) +
+  theme_bw() +
+  theme(panel.grid = element_blank()) +
+  scale_x_continuous(limits = c(0,100)) </code></pre>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/math_union_plot-1.png" width="672" /></p>
+<p>Indeed, the Pearson correlation coefficient is below .3.</p>
+<pre class="r"><code>cor(ed_dta$naep_mth_2019, ed_dta$pct_union, use= &quot;complete.obs&quot;) %&gt;% 
+  round(2) </code></pre>
+<pre><code>## [1] 0.24</code></pre>
+<p>Finally, we can observe that relationship is not statistically significant at the .05 threshold.</p>
+<pre class="r"><code>fit &lt;- lm(naep_mth_2019 ~ pct_union, ed_dta)
+fit %&gt;%  summary</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = naep_mth_2019 ~ pct_union, data = ed_dta)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -12.625  -4.774   0.168   4.339  11.190 
+## 
+## Coefficients:
+##              Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept) 277.18836    2.58150 107.375   &lt;2e-16 ***
+## pct_union     0.06077    0.03608   1.684   0.0987 .  
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 5.803 on 47 degrees of freedom
+##   (2 observations deleted due to missingness)
+## Multiple R-squared:  0.05692,    Adjusted R-squared:  0.03686 
+## F-statistic: 2.837 on 1 and 47 DF,  p-value: 0.09875</code></pre>
+</div>
+<div id="plotting-math-and-ela-together" class="section level2">
+<h2>Plotting Math and ELA Together</h2>
+<p>After creating the two previous graphs, I noticed that there were a few states that appeared near the top in one subject and not the other. For example Minnesota was ranked third in Math in 2019 but was ranked seventeenth in ELA. On the other hand, Connecticut was ranked second in reading and only ninth in math.</p>
+<pre class="r"><code>ed_dta &lt;- ed_dta %&gt;% 
+          mutate(naep_mth_rnk_2019 = rank(-naep_mth_2019, ties.method = &#39;min&#39;),
+                 naep_ela_rnk_2019 = rank(-naep_ela_2019, ties.method = &#39;min&#39;))
+
+
+ed_dta %&gt;% 
+  filter(state %in% c(&#39;MN&#39;, &#39;CT&#39;)) %&gt;% 
+  select(state_name, naep_mth_rnk_2019,naep_ela_rnk_2019)</code></pre>
+<pre><code>##    state_name naep_mth_rnk_2019 naep_ela_rnk_2019
+## 1 Connecticut                 9                 2
+## 2   Minnesota                 3                17</code></pre>
+<p>I decided explore the relationship between reading and math scores.</p>
+<pre class="r"><code>#### Math / ELA ####
+
+ed_dta %&gt;% 
+  ggplot(aes(x=naep_mth_2019, y= naep_ela_2019, label = state)) +
+  geom_point() +
+  geom_text_repel(size = 2) +
+  geom_smooth(method = &#39;lm&#39;, 
+              se = FALSE, 
+              linetype = &#39;dashed&#39;, 
+              color = &#39;red&#39;,
+              size = 0.5) +
+  theme_bw() +
+  theme(panel.grid = element_blank()) </code></pre>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<pre class="r"><code>fit &lt;- ed_dta %&gt;%  
+  lm(formula =naep_ela_2019 ~ naep_mth_2019)
+summary(fit)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = naep_ela_2019 ~ naep_mth_2019, data = .)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -5.4740 -0.9719  0.3807  1.5281  4.2439 
+## 
+## Coefficients:
+##               Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)   61.64092   14.71894   4.188 0.000117 ***
+## naep_mth_2019  0.71369    0.05236  13.630  &lt; 2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 2.239 on 49 degrees of freedom
+## Multiple R-squared:  0.7913, Adjusted R-squared:  0.787 
+## F-statistic: 185.8 on 1 and 49 DF,  p-value: &lt; 2.2e-16</code></pre>
+<pre class="r"><code>cor(ed_dta$naep_mth_2019, ed_dta$naep_ela_2019) %&gt;%  round(2)</code></pre>
+<pre><code>## [1] 0.89</code></pre>
+<p>The relationship between math and reading NAEP scores was statistically significant, as was fairly obviously from the scatterplot as well. The Pearson correlation coefficient was 0.89, indicating a strong correlation between the two.</p>
+<p>Of course, it’s not very suprising that reading and math scores are highly correlated . What I find more interesting are the outlier states in which one subject test score is much lower or higher than you would predict given the other score. Alaska, Texas, and Minnesota seem to have much lower ELA scores than you would expect given their math scores. This is apparent based on how far they lie below the regression line. On the other hand, based on how far it lies above the regression,Connecticut has much lower math scores given what you predict given their te</p>
+<p>Observing these outlier states generates some new interesting questions that I hadn’t thought about when I first tackled. Why do some states do better on one subject compared to another (or is it just noise)? Is there something about Texas, Alaska, and Minnesota that explains there overperformance in math relative to reading? This question seems potentially more interesting than the unionization relationshi because the correlation in the first two plots was much weaker and confounding was likely to be an issue. In addition, unionization seems to be a much more contentious subject in which people may base their arguments more on their ideology rather than empirical evidence. I always feel nervous venturing into these heated topic. In contrast, I doubt people have a strong ideological view for why Minnesotan eight-graders scored higher in math than in English.</p>
+</div>
+</div>
+<div id="ploting-math-and-ela-with-unionization-as-a-categorical-factor" class="section level1">
+<h1>Ploting Math and ELA with Unionization as a Categorical Factor</h1>
+<p>In order to retain the unionization rates, I created a factor that binned this variable into two categorizes based on an 80% threshold.</p>
+<pre class="r"><code>ed_dta &lt;-ed_dta %&gt;% 
+  mutate(unionized = as.factor(if_else(pct_union &gt;= 80,  &quot;80% or Above&quot;, &quot;Below 80%&quot;)))
+
+  ed_dta %&gt;% 
+  filter_all(~!is.na(.)) %&gt;% 
+  ggplot(aes(x=naep_mth_2019, y= naep_ela_2019, 
+              label = state, color = unionized, group = unionized)) +
+  geom_point() +
+  geom_text_repel(size = 2) +
+  geom_smooth(method = &#39;lm&#39;, 
+              se = FALSE, 
+              linetype = &#39;dashed&#39;, 
+              color = &#39;gray&#39;, size = 0.5, 
+              inherit.aes = FALSE,
+              aes(x=naep_mth_2019, y = naep_ela_2019)) +
+  theme_bw() +
+  theme(panel.grid = element_blank())  +
+    scale_color_manual(values = c(&#39;blue&#39;, &#39;red&#39;))</code></pre>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<p>One thing that seemed interesting to me based on this final graph was that Wisconsin seemed liked an outlier in that it was the only state in the Great Lakes region that had a unionization rate below 80%. Also among the states below the 80% unionization threshold, it had the highest math score and among the highest reading scores. Of course, again this evidence is completely descriptive. That being said I do find plotting reading and math together gives a fuller picture of student performance.</p>
+</div>
+<div id="conlusions" class="section level1">
+<h1>Conlusions</h1>
+<ol style="list-style-type: decimal">
+<li>Running into obstacles while trying new things can open new doors. Having difficulty creating plots wihtout overlapping state labels led me to find ggrepel, which is a really cool package.</li>
+<li>Sometimes, exploring data can lead to more interesting questions than you had apriori.</li>
+<li>It is often useful to explore as more than one dimension. The math/reading scatterplots helped us to look at two dimension of student performance that weren’t evident in the first two plots. Adding colors to the final plot allowed us to explore an additional dimension, namely unionization rates. In news article, reading and math scores (more often from the PISA which is an international assessment) are often cited separatedly. Citing subjects separately can provide a misleading picture for countries and states that perform better in one subject than another (e.g. the United States usually performs better in reading than in math on the PISA). Plotting math and reading scores together can provide a fuller picture of student performance.</li>
+</ol>
+</div>
