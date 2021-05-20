@@ -1,11 +1,12 @@
 ---
-title: Teacher Unions and Test Scores
-author: R package build
+title: "Teacher Unions and Test Scores"
+author: "R package build"
 date: '2021-05-17'
 slug: unionization-and-naep-data
-categories: [data-exploration]
+categories: data-exploration
 tags: []
-description: 'Explore state-level teacher unionization rates and student math/reading performance'
+description: Explore state-level teacher unionization rates and student math/reading
+  performance
 ---
 ```{r include = FALSE}
 knitr::opts_chunk$set(message = FALSE, warning = FALSE)
