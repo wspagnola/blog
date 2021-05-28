@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html prefix="og: http://ogp.me/ns#">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Teacher Unions and NAEP Test Score Data &middot; William Spagnola</title>
+        <meta name="description" content="Explore state-level teacher unionization rates and student math/reading performance">
+        <meta name="HandheldFriendly" content="True">
+        <meta name="MobileOptimized" content="320">
+        <meta name="generator" content="Hugo 0.82.0" />
+        <meta name="robots" content="index,follow">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta property="og:title" content="Teacher Unions and NAEP Test Score Data">
+<meta property="og:description" content="Explore state-level teacher unionization rates and student math/reading performance">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://wspagnola.netlify.app/2021/05/19/2021-05-17-unionization-and-naep-data/">
+        <link rel="stylesheet" href="https://wspagnola.netlify.app/dist/site.css">
+        <link rel="stylesheet" href="https://wspagnola.netlify.app/dist/syntax.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,400,600,700,300&subset=latin,cyrillic-ext,latin-ext,cyrillic">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+        
+        
+        
+        
+        
+
+    </head>
+    <body>
+        
+
+        <div id="wrapper">
+            <header class="site-header">
+                <div class="container">
+                    <div class="site-title-wrapper">
+                        
+                            <h1 class="site-title">
+                                <a href="https://wspagnola.netlify.app/">William Spagnola</a>
+                            </h1>
+                        
+                        
+                            <a class="button-square" href="https://wspagnola.netlify.app/index.xml" aria-label="RSS"><i class="fa fa-rss" aria-hidden="true"></i></a>
+                        
+                        
+                            <a class="button-square button-social hint--top" data-hint="Twitter" aria-label="Twitter" href="https://twitter.com/williamspagnola" rel="me" >
+                                <i class="fa fa-twitter" aria-hidden="true"></i>
+                            </a>
+                        
+                        
+                        
+                        
+                            <a class="button-square button-social hint--top" data-hint="Github" aria-label="Github" href="https://github.com/wspagnola" rel="me">
+                                <i class="fa fa-github-alt" aria-hidden="true"></i>
+                            </a>
+                        
+                        
+                        
+                            <a class="button-square button-social hint--top" data-hint="LinkedIn" aria-label="LinkedIn" href="https://linkedin.com/in/william-spagnola-831789169" rel="me">
+                                <i class="fa fa-linkedin" aria-hidden="true"></i>
+                            </a>
+                        
+                        
+                    </div>
+
+                    <ul class="site-nav">
+                        
+    <li class="site-nav-item">
+        <a href="/">Home</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a href="/page/main/">Main Website</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a href="/page/contact/">Contact</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a href="/page/about/">About</a>
+    </li>
+
+
+                    </ul>
+                </div>
+            </header>
+
+            <div id="container">
+
+
+<div class="container">
+    <article class="post-container" itemscope="" itemtype="http://schema.org/BlogPosting">
+        <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">Teacher Unions and NAEP Test Score Data</h1>
+    
+        <p class="post-description" itemprop="description">Explore state-level teacher unionization rates and student math/reading performance</p>
+    
+    <p class="post-date">
+        <span>Published <time datetime="2021-05-19" itemprop="datePublished">Wed, May 19, 2021</time></span>
+        <span>by</span>
+        <span itemscope="" itemprop="author" itemtype="https://schema.org/Person">
+            <span itemprop="name">
+                <a href="#" itemprop="url" rel="author">R package build</a>
+            </span>
+        </span>
+    </p>
+    
+        <p class="post-reading post-line">
+            <span>Estimated reading time: 9 min</span>
+        </p>
+    
+</header>
+
+        <div class="post-content clearfix" itemprop="articleBody">
+    
+
+    
+<script src="https://wspagnola.netlify.app/2021/05/19/2021-05-17-unionization-and-naep-data/index_files/header-attrs/header-attrs.js"></script>
+
+
+<div id="introduction" class="section level1">
+<h1>Introduction</h1>
+<p>As a former teacher, I’m often intrigued by the way in which education issues provoke such strong feelings among non-educators. Teacher unions tend to elicit particularly strong opinions.</p>
+<p>Since so many people have strong opinions about unions, I decided to perform a state-level exploratory analysis of the relationship between test scores and unionization rates.</p>
+</div>
+<div id="standard-correlation-vs.-causation-caveat" class="section level1">
+<h1>Standard Correlation vs. Causation Caveat</h1>
+<p>Of course, I need to start with the caveat that these data are purely correlational. Any inferences made based these charts should be taken with a grain of salt!</p>
+</div>
+<div id="finding-test-scores-data" class="section level1">
+<h1>Finding Test Scores Data</h1>
+<div id="naep" class="section level3">
+<h3>NAEP</h3>
+<p>I used NAEP data for the state-level math and reading scores.<br />
+<a href="https://nces.ed.gov/nationsreportcard/about/">NAEP</a> stands for National Assessment of Education Progress. It is administered by the NCES (National Center for Education Statistics ) to students across the United States. It is often referred to as the “Nation’s Report Card” for several reasons:</p>
+<ol style="list-style-type: decimal">
+<li>It is generally considered to be high quality.</li>
+<li>It has been administered every few years since 1969.</li>
+<li>Unlike high stakes exams, the same test is administered across the nation.</li>
+</ol>
+</div>
+<div id="why-focus-on-8th-grade-test-scores" class="section level3">
+<h3>Why focus on 8th grade test scores?</h3>
+<p>Each assessment year, a representative sample of students from grades 4, 8, and 12 take the test. I focus on grade 8 instead of grade 12 because there is some concern that seniors do not take the test as seriously (<a href="https://dianeravitch.net/2015/11/11/a-note-to-marc-tucker-why-i-disagree-with-your-analysis-of-naep-scores/">See here</a>). Consequently, grade 8 is the latest grade for which we have data before “senioritis” becomes a concern.</p>
+</div>
+</div>
+<div id="obtaining-the-data" class="section level1">
+<h1>Obtaining the Data</h1>
+<div id="unionization-data" class="section level3">
+<h3>Unionization Data</h3>
+<p>After a great deal of searching, I was able to find 2017-2018 state-level unionization rates from the <a href="https://nces.ed.gov/surveys/ntps/tables/ntps1718_20111201_t1s.asp">National Teacher and Principal Survey</a>.
+Unfortunately, there were no data from Maryland or DC due to low response rates.</p>
+</div>
+<div id="naep-data" class="section level3">
+<h3>NAEP Data</h3>
+<p>TFinding NAEP test data was much simpler. There is an easy-to-use <a href="https://www.nationsreportcard.gov/ndecore/xplore/NDE">data portal</a> on their website. You can select the year, grade-level, subject, and jurisdiction you are looking for. I used this tool to create two state-level datasets with the 2019 math and reading NAEP results.</p>
+<pre class="r"><code>library(dplyr)
+library(ggplot2)
+library(ggrepel)
+
+setwd(&#39;../../..&#39;)
+naep_mth &lt;- read.csv(&#39;data/state_naep_mth2019.csv&#39;)
+naep_ela &lt;- read.csv(&#39;data/state_naep_ela2019.csv&#39;)
+pct_union &lt;- read.csv(&#39;data/state_pct_union.csv&#39;)
+                 
+ed_dta &lt;- naep_mth %&gt;% 
+            inner_join(naep_ela, by = &#39;State&#39;)  %&gt;% 
+            inner_join(pct_union, by = &#39;State&#39;) 
+          
+state_abb &lt;-   append(state.abb, &#39;DC&#39;, after =8) 
+
+ed_dta &lt;- ed_dta %&gt;% 
+            rename(state_name = State) %&gt;% 
+            mutate(state = state_abb)
+
+ed_dta %&gt;%  head()</code></pre>
+<pre><code>##   state_name naep_mth_2019 naep_ela_2019 pct_union state
+## 1    Alabama           269           253      73.0    AL
+## 2     Alaska           274           252      86.0    AK
+## 3    Arizona           280           259      31.0    AZ
+## 4   Arkansas           274           259      26.1    AR
+## 5 California           276           259      90.7    CA
+## 6   Colorado           285           267      57.2    CO</code></pre>
+</div>
+</div>
+<div id="visualizations" class="section level1">
+<h1>Visualizations</h1>
+<div id="reading-tests-and-unionization" class="section level2">
+<h2>Reading Tests and Unionization</h2>
+<p>I used ggplot to create a scatterplot of NAEP reading scores over unionization rates by state. I used the geom_text_repel() function from Kamil Slowikowski’s <a href="https://cran.r-project.org/web/packages/ggrepel/vignettes/ggrepel.html">ggrepel</a> package to ensure that none of the labels overlapped. Finally, I used geom_smooth to create a fitted OLS regression line.</p>
+<pre class="r"><code>ed_dta %&gt;% 
+  filter_all(~!is.na(.)) %&gt;% 
+  ggplot(aes(x=pct_union, y= naep_ela_2019, label = state)) +
+  geom_point() +
+  geom_text_repel(size = 2) +
+  geom_smooth(method = &#39;lm&#39;, 
+              se = FALSE, 
+              linetype = &#39;dashed&#39;, 
+              color = &#39;red&#39;, 
+              size = 0.5) +
+  theme_bw() +
+  theme(panel.grid = element_blank())+
+  scale_x_continuous(limits = c(0,100)) </code></pre>
+<p><img src="https://wspagnola.netlify.app/2021/05/19/2021-05-17-unionization-and-naep-data/index_files/figure-html/ela_union_plot-1.png" width="672" /></p>
+<p>Based on the graph, there may be a correlation between NAEP reading scores and unionization. Of course, as I’ve already warned, correlation does not imply causation! There could be a third variable that explains both high unionization rates and high reading test scores.</p>
+<p>Even the correlation between the two variables may be suspect. For example, you could argue that if we remove Massachusetts and the trend line, the positive relationship would not be so apparent.</p>
+<pre class="r"><code>cor(ed_dta$naep_ela_2019, ed_dta$pct_union, use = &#39;complete.obs&#39;)  %&gt;%  round(2)</code></pre>
+<pre><code>## [1] 0.32</code></pre>
+<p>The correlation between state-level NAEP reading scores and unionization is .32, which is weak to moderate.</p>
+<pre class="r"><code>fit &lt;- lm(naep_ela_2019 ~ pct_union, ed_dta)
+summary(fit)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = naep_ela_2019 ~ pct_union, data = ed_dta)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -11.5948  -2.3236   0.6235   3.0408   8.9896 
+## 
+## Coefficients:
+##              Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept) 258.09693    1.96410 131.408   &lt;2e-16 ***
+## pct_union     0.06393    0.02745   2.329   0.0242 *  
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 4.415 on 47 degrees of freedom
+##   (2 observations deleted due to missingness)
+## Multiple R-squared:  0.1034, Adjusted R-squared:  0.08437 
+## F-statistic: 5.423 on 1 and 47 DF,  p-value: 0.02422</code></pre>
+<p>The coefficient of unionization is statistically significant. Once final warning, this evidence is just correlational, so we shouldn’t read too much into it.</p>
+</div>
+<div id="math-tests-and-unionization" class="section level2">
+<h2>Math Tests and Unionization</h2>
+<p>I also plotted NAEP math scores over unionization. Based on the scatterplot, math test scores do not seem to be as strongly correlated with unionization as reading test scores were.</p>
+<pre class="r"><code>ed_dta %&gt;% 
+  filter_all(~!is.na(.)) %&gt;% 
+  ggplot(aes(x=pct_union, y= naep_mth_2019, label = state)) +
+  geom_point() +
+  geom_text(position = position_dodge(width = 0.1), vjust = 2, size = 2) +
+  geom_smooth(method = &#39;lm&#39;, 
+              se = FALSE, 
+              linetype = &#39;dashed&#39;, 
+              color = &#39;red&#39;, 
+              size = 0.5) +
+  theme_bw() +
+  theme(panel.grid = element_blank()) +
+  scale_x_continuous(limits = c(0,100)) </code></pre>
+<p><img src="https://wspagnola.netlify.app/2021/05/19/2021-05-17-unionization-and-naep-data/index_files/figure-html/math_union_plot-1.png" width="672" /></p>
+<p>Indeed, the Pearson correlation coefficient is below .3.</p>
+<pre class="r"><code>cor(ed_dta$naep_mth_2019, ed_dta$pct_union, use= &quot;complete.obs&quot;) %&gt;% 
+  round(2) </code></pre>
+<pre><code>## [1] 0.24</code></pre>
+<p>Finally, we can observe that relationship is not statistically significant at the .05 threshold.</p>
+<pre class="r"><code>fit &lt;- lm(naep_mth_2019 ~ pct_union, ed_dta)
+fit %&gt;%  summary</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = naep_mth_2019 ~ pct_union, data = ed_dta)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -12.625  -4.774   0.168   4.339  11.190 
+## 
+## Coefficients:
+##              Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept) 277.18836    2.58150 107.375   &lt;2e-16 ***
+## pct_union     0.06077    0.03608   1.684   0.0987 .  
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 5.803 on 47 degrees of freedom
+##   (2 observations deleted due to missingness)
+## Multiple R-squared:  0.05692,    Adjusted R-squared:  0.03686 
+## F-statistic: 2.837 on 1 and 47 DF,  p-value: 0.09875</code></pre>
+</div>
+<div id="plotting-math-and-ela-together" class="section level2">
+<h2>Plotting Math and ELA Together</h2>
+<p>After creating the two previous graphs, I noticed that there were a few states that appeared near the top in one subject and not the other. For example Minnesota was ranked third in Math in 2019 but was ranked seventeenth in ELA. On the other hand, Connecticut was ranked second in reading and only ninth in math.</p>
+<pre class="r"><code>ed_dta &lt;- ed_dta %&gt;% 
+          mutate(naep_mth_rnk_2019 = rank(-naep_mth_2019, ties.method = &#39;min&#39;),
+                 naep_ela_rnk_2019 = rank(-naep_ela_2019, ties.method = &#39;min&#39;))
+
+
+ed_dta %&gt;% 
+  filter(state %in% c(&#39;MN&#39;, &#39;CT&#39;)) %&gt;% 
+  select(state_name, naep_mth_rnk_2019,naep_ela_rnk_2019)</code></pre>
+<pre><code>##    state_name naep_mth_rnk_2019 naep_ela_rnk_2019
+## 1 Connecticut                 9                 2
+## 2   Minnesota                 3                17</code></pre>
+<p>I decided to explore the relationship between reading and math scores by creating another scatterplot with reading scores on the y-axis and math scores on the x-axis.
+Based on this scatterplot,we can see that reading and math test scores are highly correlated.</p>
+<pre class="r"><code>ed_dta %&gt;% 
+  ggplot(aes(x=naep_mth_2019, y= naep_ela_2019, label = state)) +
+  geom_point() +
+  geom_text_repel(size = 2) +
+  geom_smooth(method = &#39;lm&#39;, 
+              se = FALSE, 
+              linetype = &#39;dashed&#39;, 
+              color = &#39;red&#39;,
+              size = 0.5) +
+  theme_bw() +
+  theme(panel.grid = element_blank()) </code></pre>
+<p><img src="https://wspagnola.netlify.app/2021/05/19/2021-05-17-unionization-and-naep-data/index_files/figure-html/ela_math_plot-1.png" width="672" /></p>
+<p>The Pearson correlation coefficient was 0.89, indicating a strong correlation between the two. This high correlation coefficient is consistent with the scatterplot.</p>
+<pre class="r"><code>cor(ed_dta$naep_mth_2019, ed_dta$naep_ela_2019) %&gt;%  round(2)</code></pre>
+<pre><code>## [1] 0.89</code></pre>
+<p>Finally, the relationship between math and reading NAEP scores was also statistically significant.</p>
+<pre class="r"><code>fit &lt;- ed_dta %&gt;%  
+  lm(formula =naep_ela_2019 ~ naep_mth_2019)
+summary(fit)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = naep_ela_2019 ~ naep_mth_2019, data = .)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -5.4740 -0.9719  0.3807  1.5281  4.2439 
+## 
+## Coefficients:
+##               Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)   61.64092   14.71894   4.188 0.000117 ***
+## naep_mth_2019  0.71369    0.05236  13.630  &lt; 2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 2.239 on 49 degrees of freedom
+## Multiple R-squared:  0.7913, Adjusted R-squared:  0.787 
+## F-statistic: 185.8 on 1 and 49 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+<div id="ploting-math-and-ela-with-unionization-as-a-categorical-factor" class="section level2">
+<h2>Ploting Math and ELA with Unionization as a Categorical Factor</h2>
+<p>To explore unionization rates while plotting reading over math test scores, I created a factor that binned unionization into two categorizes based on an 80% threshold.</p>
+<pre class="r"><code>ed_dta &lt;-ed_dta %&gt;% 
+  mutate(unionized = as.factor(if_else(pct_union &gt;= 80,  &quot;80% or Above&quot;, &quot;Below 80%&quot;)))
+
+  ed_dta %&gt;% 
+  filter_all(~!is.na(.)) %&gt;% 
+  ggplot(aes(x=naep_mth_2019, y= naep_ela_2019, 
+              label = state, color = unionized, group = unionized)) +
+  geom_point() +
+  geom_text_repel(size = 2) +
+  geom_smooth(method = &#39;lm&#39;, 
+              se = FALSE, 
+              linetype = &#39;dashed&#39;, 
+              color = &#39;gray&#39;, size = 0.5, 
+              inherit.aes = FALSE,
+              aes(x=naep_mth_2019, y = naep_ela_2019)) +
+  theme_bw() +
+  theme(panel.grid = element_blank())  +
+    scale_color_manual(values = c(&#39;blue&#39;, &#39;red&#39;))</code></pre>
+<p><img src="https://wspagnola.netlify.app/2021/05/19/2021-05-17-unionization-and-naep-data/index_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<p>You can explore a lot of things in this graph. One thing I found interesting was that Wisconsin was the only state in the Great Lakes region that had a unionization rate below 80%. Also, among the states below the 80% unionization threshold, it had the highest math score and among the highest reading scores. I think this graph shows how plotting reading and math along the y and x axes provides a fuller picture of student performance.</p>
+</div>
+</div>
+<div id="why-do-students-in-minnesota-peform-better-in-math-than-reading" class="section level1">
+<h1>Why Do Students in Minnesota Peform Better in Math than Reading?</h1>
+<p>Of course, it’s not very surprising that reading and math scores are highly correlated . What I find more interesting are the states in which students performed better in one subject than the other. For example, Alaska, Texas, and Minnesota seem to have much lower ELA scores than you would expect given their math scores. This is apparent based on how far they lie below the regression line. On the other hand, based on how far it lies above the regression, Connecticut has much lower math scores than what you predict given its reading scores.</p>
+<p>Observing these outliers generates some new interesting questions that I hadn’t thought about when I first started working with these data.</p>
+<ul>
+<li>
+Do some states do better on one subject compared to another? Or is this just noise?
+</li>
+<li>
+Is there some common factor about Texas, Alaska, and Minnesota that explains their better performance in math? Or are there different factors for each state?
+</li>
+</ul>
+<p>These new questions about discrepancies in reading/math performance may contain more unexplored territory than the often discussed topic of teacher unions.</p>
+</div>
+<div id="conclusions" class="section level1">
+<h1>Conclusions</h1>
+<ol style="list-style-type: decimal">
+<li><p>Running into obstacles while trying new things can open new doors. Having difficulty creating plots without overlapping state labels led me to discover the ggrepel package.</p></li>
+<li><p>Sometimes, exploring data can lead to new questions that are more interesting than your original question.</p></li>
+<li><p>It is often useful to explore a construct on more than one dimension. The reading over math scatterplots helped us to simultaneously look at two dimensions of student performance.</p></li>
+</ol>
+</div>
+
+</div>
+
+        <footer class="post-footer clearfix"><div class="share">
+            <a class="icon-twitter" href="https://twitter.com/share?text=Teacher%20Unions%20and%20NAEP%20Test%20Score%20Data&url=https%3a%2f%2fwspagnola.netlify.app%2f2021%2f05%2f19%2f2021-05-17-unionization-and-naep-data%2f"
+                onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;" aria-label="Share on Twitter">
+                <i class="fa fa-twitter" aria-hidden="true"></i>
+            </a>
+            <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fwspagnola.netlify.app%2f2021%2f05%2f19%2f2021-05-17-unionization-and-naep-data%2f"
+                onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;" aria-label="Share on Facebook">
+                <i class="fa fa-facebook" aria-hidden="true"></i>
+            </a>
+    </div>
+</footer>
+
+        
+    <div class="comments">
+        
+    </div>
+
+
+
+<div id="disqus_thread"></div>
+<script>
+(function() {
+var d = document, s = d.createElement('script');
+s.src = 'https://approachingsignificance-1.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </article>
+</div>
+
+            </div>
+        </div>
+
+        <footer class="footer">
+            <div class="container">
+                <div class="site-title-wrapper">
+                    <h1 class="site-title">
+                        <a href="https://wspagnola.netlify.app/">William Spagnola</a>
+                    </h1>
+                    <a class="button-square button-jump-top js-jump-top" href="#" aria-label="Back to Top">
+                        <i class="fa fa-angle-up" aria-hidden="true"></i>
+                    </a>
+                </div>
+
+                <p class="footer-copyright">
+                    <span>&copy; 2021 / Powered by <a href="https://gohugo.io/">Hugo</a></span>
+                </p>
+                <p class="footer-copyright">
+                    <span><a href="https://github.com/roryg/ghostwriter">Ghostwriter theme</a> By <a href="http://jollygoodthemes.com">JollyGoodThemes</a></span>
+                    <span>/ <a href="https://github.com/jbub/ghostwriter">Ported</a> to Hugo By <a href="https://github.com/jbub">jbub</a></span>
+                </p>
+            </div>
+        </footer>
+
+        <script src="https://wspagnola.netlify.app/js/jquery-1.11.3.min.js"></script>
+        <script src="https://wspagnola.netlify.app/js/jquery.fitvids.js"></script>
+        <script src="https://wspagnola.netlify.app/js/scripts.js"></script>
+    </body>
+</html>
+

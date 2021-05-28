@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html prefix="og: http://ogp.me/ns#">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Exploring States of Tobacco-Use with Sankey Plots &middot; William Spagnola</title>
+        <meta name="description" content="Introduction While working toward my master’s degree in applied statistics, I interned at the Tobacco Research Lab at NYU’s College of Global Public Health. During my internship, I collaborated with another researcher
+ Population Assessment of Tobacco and Health (PATH) Survey The PATH study is a longitudinal study of tobacco use and attitudes funded by the National Institute of Health (NIH) and the Food and Drug Administation (FDA). The study began in 2013 and has aimed to follow the same respondents across multiple waves.">
+        <meta name="HandheldFriendly" content="True">
+        <meta name="MobileOptimized" content="320">
+        <meta name="generator" content="Hugo 0.82.0" />
+        <meta name="robots" content="index,follow">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta property="og:title" content="Exploring States of Tobacco-Use with Sankey Plots">
+<meta property="og:description" content="Introduction While working toward my master’s degree in applied statistics, I interned at the Tobacco Research Lab at NYU’s College of Global Public Health. During my internship, I collaborated with another researcher
+ Population Assessment of Tobacco and Health (PATH) Survey The PATH study is a longitudinal study of tobacco use and attitudes funded by the National Institute of Health (NIH) and the Food and Drug Administation (FDA). The study began in 2013 and has aimed to follow the same respondents across multiple waves.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://wspagnola.netlify.app/2021/05/20/2021-05-20-exploring-states-of-tobacco-use-with-sankey-plots/">
+        <link rel="stylesheet" href="https://wspagnola.netlify.app/dist/site.css">
+        <link rel="stylesheet" href="https://wspagnola.netlify.app/dist/syntax.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,400,600,700,300&subset=latin,cyrillic-ext,latin-ext,cyrillic">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+        
+        
+        
+        
+        
+
+    </head>
+    <body>
+        
+
+        <div id="wrapper">
+            <header class="site-header">
+                <div class="container">
+                    <div class="site-title-wrapper">
+                        
+                            <h1 class="site-title">
+                                <a href="https://wspagnola.netlify.app/">William Spagnola</a>
+                            </h1>
+                        
+                        
+                            <a class="button-square" href="https://wspagnola.netlify.app/index.xml" aria-label="RSS"><i class="fa fa-rss" aria-hidden="true"></i></a>
+                        
+                        
+                            <a class="button-square button-social hint--top" data-hint="Twitter" aria-label="Twitter" href="https://twitter.com/williamspagnola" rel="me" >
+                                <i class="fa fa-twitter" aria-hidden="true"></i>
+                            </a>
+                        
+                        
+                        
+                        
+                            <a class="button-square button-social hint--top" data-hint="Github" aria-label="Github" href="https://github.com/wspagnola" rel="me">
+                                <i class="fa fa-github-alt" aria-hidden="true"></i>
+                            </a>
+                        
+                        
+                        
+                            <a class="button-square button-social hint--top" data-hint="LinkedIn" aria-label="LinkedIn" href="https://linkedin.com/in/william-spagnola-831789169" rel="me">
+                                <i class="fa fa-linkedin" aria-hidden="true"></i>
+                            </a>
+                        
+                        
+                    </div>
+
+                    <ul class="site-nav">
+                        
+    <li class="site-nav-item">
+        <a href="/">Home</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a href="/page/main/">Main Website</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a href="/page/contact/">Contact</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a href="/page/about/">About</a>
+    </li>
+
+
+                    </ul>
+                </div>
+            </header>
+
+            <div id="container">
+
+
+<div class="container">
+    <article class="post-container" itemscope="" itemtype="http://schema.org/BlogPosting">
+        <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">Exploring States of Tobacco-Use with Sankey Plots</h1>
+    
+    <p class="post-date">
+        <span>Published <time datetime="2021-05-20" itemprop="datePublished">Thu, May 20, 2021</time></span>
+        <span>by</span>
+        <span itemscope="" itemprop="author" itemtype="https://schema.org/Person">
+            <span itemprop="name">
+                <a href="#" itemprop="url" rel="author">R package build</a>
+            </span>
+        </span>
+    </p>
+    
+        <p class="post-reading post-line">
+            <span>Estimated reading time: 2 min</span>
+        </p>
+    
+</header>
+
+        <div class="post-content clearfix" itemprop="articleBody">
+    
+
+    
+<script src="https://wspagnola.netlify.app/2021/05/20/2021-05-20-exploring-states-of-tobacco-use-with-sankey-plots/index_files/header-attrs/header-attrs.js"></script>
+
+
+<div id="introduction" class="section level1">
+<h1>Introduction</h1>
+<p>While working toward my master’s degree in applied statistics, I interned at the <a href="https://publichealth.nyu.edu/research-scholarship/centers-labs-initiatives/tobacco-research-lab">Tobacco Research Lab</a> at NYU’s College of Global Public Health. During my internship, I collaborated with another researcher</p>
+</div>
+<div id="population-assessment-of-tobacco-and-health-path-survey" class="section level1">
+<h1>Population Assessment of Tobacco and Health (PATH) Survey</h1>
+<p>The <a href="https://pathstudyinfo.nih.gov/">PATH study</a> is a longitudinal study of tobacco use and attitudes funded by the National Institute of Health (NIH) and the Food and Drug Administation (FDA). The study began in 2013 and has aimed to follow the same respondents across multiple waves. The fourth and most recent wave ended in January of 2018. According to the <a href="https://www.fda.gov/tobacco-products/research/fda-and-nih-study-population-assessment-tobacco-and-health">FDA’s website</a>, one of the goals of the study is to “study patterns of tobacco product use, cessation, and relapse” , which will be the focus of this blog post.</p>
+</div>
+<div id="states-of-tobacco-use" class="section level1">
+<h1>States of Tobacco Use</h1>
+<p>The PATH survey offers a number way to classify smokers. For my internship, we focused on five states of cigarette smoking/cessation.</p>
+<ol style="list-style-type: decimal">
+<li>Current Established Smoker</li>
+<li>Former Established Smoker</li>
+<li>Current Experimental Smoker</li>
+<li>Former Experimental Smoker</li>
+<li>Non Smoker</li>
+</ol>
+<p>The non-smoker category is self-explanatory, but the other ones require some explanation.</p>
+<div id="established-vs.-experimental-smokers" class="section level3">
+<h3>Established vs. Experimental Smokers</h3>
+<p>Established smokers were classified as respondents who reported to have smoked at least 100 cigarettes in their lifetime. Experimental smokers were those who reported smoking between 1 and 99 cigarettes in their lifetime.</p>
+</div>
+<div id="current-vs.-former" class="section level3">
+<h3>Current vs. Former</h3>
+<p>Current smokers were those who smoked reported currently smoking everyday or some days. Former smokers were those who had reported smoking at least one cigarette in their lifetime but not smoking everyday or somedays currently.</p>
+</div>
+<div id="note-on-categories" class="section level3">
+<h3>Note on categories</h3>
+<p>not all studies use these five categories. For example, some studies focus on quit rates and define quitting by some threshold such as having not smoked any cigarettes in the past 30 days. Also note that the 100 cigarette threshold between established vs. experimental smokers is somewhat arbitrary. However, using a consistent threshold across wave allows us to make comparison and study transitions over time.</p>
+</div>
+</div>
+<div id="our-goal" class="section level1">
+<h1>Our Goal</h1>
+<p>Our first goal was to visualize these transitions across the three waves of data that were available at the time my internship.</p>
+</div>
+<div id="sankey-plots" class="section level1">
+<h1>Sankey Plots</h1>
+<p>During one of our internship meetings we discussed our desire to visualize transisitions between states of cigarette smoking over the time. One of the directors (I believe it was Dr. <a href="https://publichealth.nyu.edu/faculty/raymond-niaura">Raymond Niaru</a> suggested using a Sankey diagram.</p>
+<p><a href="https://en.wikipedia.org/wiki/Sankey_diagram#:~:text=Sankey%20diagrams%20are%20a%20type,proportional%20to%20the%20flow%20rate.&amp;text=Sankey%20diagrams%20emphasize%20the%20major,quantities%20within%20defined%20system%20boundaries">Sankey diagram</a> are a type of flow chart to model transition between states. The difference between the</p>
+</div>
+
+</div>
+
+        <footer class="post-footer clearfix"><div class="share">
+            <a class="icon-twitter" href="https://twitter.com/share?text=Exploring%20States%20of%20Tobacco-Use%20with%20Sankey%20Plots&url=https%3a%2f%2fwspagnola.netlify.app%2f2021%2f05%2f20%2f2021-05-20-exploring-states-of-tobacco-use-with-sankey-plots%2f"
+                onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;" aria-label="Share on Twitter">
+                <i class="fa fa-twitter" aria-hidden="true"></i>
+            </a>
+            <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fwspagnola.netlify.app%2f2021%2f05%2f20%2f2021-05-20-exploring-states-of-tobacco-use-with-sankey-plots%2f"
+                onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;" aria-label="Share on Facebook">
+                <i class="fa fa-facebook" aria-hidden="true"></i>
+            </a>
+    </div>
+</footer>
+
+        
+    <div class="comments">
+        
+    </div>
+
+
+
+<div id="disqus_thread"></div>
+<script>
+(function() {
+var d = document, s = d.createElement('script');
+s.src = 'https://approachingsignificance-1.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </article>
+</div>
+
+            </div>
+        </div>
+
+        <footer class="footer">
+            <div class="container">
+                <div class="site-title-wrapper">
+                    <h1 class="site-title">
+                        <a href="https://wspagnola.netlify.app/">William Spagnola</a>
+                    </h1>
+                    <a class="button-square button-jump-top js-jump-top" href="#" aria-label="Back to Top">
+                        <i class="fa fa-angle-up" aria-hidden="true"></i>
+                    </a>
+                </div>
+
+                <p class="footer-copyright">
+                    <span>&copy; 2021 / Powered by <a href="https://gohugo.io/">Hugo</a></span>
+                </p>
+                <p class="footer-copyright">
+                    <span><a href="https://github.com/roryg/ghostwriter">Ghostwriter theme</a> By <a href="http://jollygoodthemes.com">JollyGoodThemes</a></span>
+                    <span>/ <a href="https://github.com/jbub/ghostwriter">Ported</a> to Hugo By <a href="https://github.com/jbub">jbub</a></span>
+                </p>
+            </div>
+        </footer>
+
+        <script src="https://wspagnola.netlify.app/js/jquery-1.11.3.min.js"></script>
+        <script src="https://wspagnola.netlify.app/js/jquery.fitvids.js"></script>
+        <script src="https://wspagnola.netlify.app/js/scripts.js"></script>
+    </body>
+</html>
+

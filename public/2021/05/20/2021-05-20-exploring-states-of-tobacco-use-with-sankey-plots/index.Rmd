@@ -1,0 +1,46 @@
+---
+title: Exploring States of Tobacco-Use with Sankey Plots
+author: R package build
+date: '2021-05-20'
+slug: exploring-states-of-tobacco-use-with-sankey-plots
+categories: [data-analysis, data-visualization]
+tags: []
+description: ''
+---
+
+
+# Introduction
+While working toward my master's degree in applied statistics, I interned at the [Tobacco Research Lab](https://publichealth.nyu.edu/research-scholarship/centers-labs-initiatives/tobacco-research-lab) at NYU's College of Global Public Health.  During my internship, I collaborated with another researcher
+
+
+# Population Assessment of Tobacco and Health (PATH) Survey 
+The [PATH study ](https://pathstudyinfo.nih.gov/) is a longitudinal study of tobacco use and attitudes funded by the National Institute of Health (NIH) and the Food and Drug Administation (FDA).    The study began in 2013 and has aimed to follow the same respondents across multiple waves.  The fourth and most recent wave ended in January of 2018.  According to the [FDA's website](https://www.fda.gov/tobacco-products/research/fda-and-nih-study-population-assessment-tobacco-and-health),  one of the goals of the study is to "study patterns of tobacco product use, cessation, and relapse" , which will be the focus of this blog post. 
+
+# States of Tobacco Use
+The PATH survey offers a number way to classify smokers.  For my internship, we focused on five states of cigarette smoking/cessation.
+
+1. Current Established Smoker
+2. Former Established Smoker
+3. Current Experimental Smoker
+4. Former Experimental Smoker
+5. Non Smoker 
+
+The non-smoker category is self-explanatory, but the other ones require some explanation.
+
+### Established vs. Experimental Smokers
+Established smokers were classified as respondents who reported to have smoked at least 100 cigarettes in their lifetime.  Experimental smokers were those who reported smoking between 1 and 99 cigarettes in their lifetime.
+
+### Current vs. Former
+Current smokers were those who smoked reported currently smoking everyday or some days.   Former smokers were those who had reported smoking at least one cigarette in their lifetime but not smoking everyday or somedays currently. 
+
+### Note on categories
+not all studies use these five categories.  For example, some studies focus on quit rates and define quitting by some threshold such as having not smoked any cigarettes in the past 30 days.  Also note that the 100 cigarette threshold between established vs. experimental smokers is somewhat arbitrary.  However, using a consistent threshold across wave allows us to make comparison and study transitions over time. 
+
+
+# Our Goal
+Our first goal was to visualize these transitions across the three waves of data that were available at the time my internship. 
+
+# Sankey Plots
+During one of our internship meetings we discussed our desire to visualize transisitions between states of cigarette smoking over the time.  One of the directors (I believe it was Dr. [Raymond Niaru](https://publichealth.nyu.edu/faculty/raymond-niaura) suggested using a Sankey diagram.
+
+[Sankey diagram](https://en.wikipedia.org/wiki/Sankey_diagram#:~:text=Sankey%20diagrams%20are%20a%20type,proportional%20to%20the%20flow%20rate.&text=Sankey%20diagrams%20emphasize%20the%20major,quantities%20within%20defined%20system%20boundaries) are a type of flow chart to model transition between states.  The difference between the
