@@ -14,7 +14,7 @@ slug: exploring-states-of-tobacco-use-with-sankey-plots
 image-preview: "/img/sankey_relapse_w1_w2.png"
 ---
 
-```{css, echo=FALSE}
+```{css img_css, echo=FALSE}
 img {
     display: block;
   margin-left: auto;
@@ -23,12 +23,13 @@ img {
 }
 ```
 
-```{r include = FALSE}
+```{r load_packages, include = FALSE}
 library(tidyverse)
 library(widgetframe)
 library(DT)
           
 ```
+
 # Introduction
 While working toward my master's degree in applied statistics, I interned at the [Tobacco Research Lab](https://publichealth.nyu.edu/research-scholarship/centers-labs-initiatives/tobacco-research-lab) at NYU's College of Global Public Health.  During my internship, I collaborated with another researcher to study changing smoking states over time.  We were interested in answering questions such as what proportion of cigarette smokers quit and what proportion of former smokers relapse.
 
@@ -64,12 +65,11 @@ Our first objective was to create a Sankey Diagram to visualize these transition
 
 # A Brief History of Sankey Diagrams
 
-[Sankey diagrams](https://en.wikipedia.org/wiki/Sankey_diagram#:~:text=Sankey%20diagrams%20are%20a%20type,proportional%20to%20the%20flow%20rate.&text=Sankey%20diagrams%20emphasize%20the%20major,quantities%20within%20defined%20system%20boundaries) are a type of flow chart to model transitions over time.  In a Sankey diagram, the proportions of each flow are represented through the width of the arrows. 
+[Sankey diagrams](https://en.wikipedia.org/wiki/Sankey_diagram#:~:text=Sankey%20diagrams%20are%20a%20type,proportional%20to%20the%20flow%20rate.&text=Sankey%20diagrams%20emphasize%20the%20major,quantities%20within%20defined%20system%20boundaries) are a type of flow chart used to model transitions over time.  In a Sankey diagram, the proportion of each flow is represented by the width of the arrows. 
 
-Sankey diagrams are named after Captain Matthew Henry Phineas Riall Sankey, https://en.wikipedia.org/wiki/Sankey_diagram, an Irish engineer, who created a diagram of the flow of steam through an engine in 1898.  Below is the Steam Engine diagram he created. 
+Sankey diagrams are named after Captain Matthew Henry Phineas Riall Sankey, https://en.wikipedia.org/wiki/Sankey_diagram, an Irish engineer.  In 1898, Sankey created a diagram of the flow of steam through an engine. 
 
 ```{r echo=FALSE, out.width = "300px", out.height = "400px", fig.align= "center", fig.cap= "Original Sankey Diagram (Source: Wikipedia)"}
-##![Sankey's Original Steam Engine Diagram](/img/steam_engine_sankey.png){width=80%}
 knitr::include_graphics("/img/steam_engine_sankey.png",error =FALSE)
 
 ```
@@ -77,14 +77,13 @@ knitr::include_graphics("/img/steam_engine_sankey.png",error =FALSE)
 Another famous example was created by Charles Minard almost 30 years earlier.  Minard's diagram shows the movement of Napoleon's army during his 1812 Russian campaign. In the visualization, the width of the arrow becomes thinner as casualties and desertions diminishes the size of Napoleon's army.
 
 ```{r echo=FALSE, fig.cap="Sankey Diagram of Napoleon's Russian Campaign (Source: Wikipedia)", fig.align="center"}
-##![Sankey's Original Steam Engine Diagram](/img/steam_engine_sankey.png){width=80%}
 knitr::include_graphics("/img/Minard.png",error =FALSE)
 
 ```
 
 # Getting the Data in Shape
 
-To create our own Sankey diagram, we decided to use [Flourish Studio](https://flourish.studio/).   Flourish offers a variety of visualizations including three types of Sankey diagrams. We chose the multi-step alluvial Sankey  diagram because each flow is measured at the same time points, i.e. each wave of the survey.   
+To create our own Sankey diagram, we decided to use [Flourish Studio](https://flourish.studio/).   Flourish offers a variety of visualizations including three types of Sankey diagrams. We chose the multi-step alluvial Sankey  diagram because each flow is measured at the same time points, namely each wave of the survey.   
 
 Before uploading our dataset, we needed to structure it to fit Flourish's specifications.  This is where R comes in handy. The Sankey Diagram dataset should have the following five columns. 
 
@@ -98,7 +97,7 @@ Before uploading our dataset, we needed to structure it to fit Flourish's specif
 
 Below is an example of how the data should be structured.
 
-```{r echo = FALSE}
+```{r example_sankey_data, echo = FALSE}
 
 # Note:s Can Use DT here 
 dta <- data.frame(Source = c('Never Smoker', 'Never Smoker',
@@ -123,14 +122,16 @@ dta %>%
 
 ```
 
-Each row in the dataset represents a unique flow or arrow between two waves of the study.  For example, in the above table, there were 3,000 **Never Smokers** in **Wave 1** (Rows 1 and 2).  Of these 3,000 **Never Smokers**, 2,000 remained **Never Smokers** and 1,000 became **Current Established Smokers** in **Wave 2**.  Starting in **Wave 2**, there were 2,200 **Current Established Smokers** (Rows 7 and 8).  Of these respondents, 1,800 remained **Current Established Smokers**  and 400 became **Former Smokers** in **Wave 3**. 
+Each row in the dataset represents a unique flow or arrow between two waves of the study.  For example, in the table above, there were 3,000 **Never Smokers** in **Wave 1** (Rows 1 and 2).  Of these 3,000 **Never Smokers**, 2,000 remained **Never Smokers** and 1,000 became **Current Established Smokers** in **Wave 2**. 
+
+Starting in **Wave 2**, there were 2,200 **Current Established Smokers** (Rows 7 and 8).  Of these respondents, 1,800 remained **Current Established Smokers**  and 400 became **Former Smokers** in **Wave 3**. 
 
 
-### Constructing and Loading PATH Dathset
+## Step 1: Construct and Load PATH Dathset
 
 So now it's time to go back to our path data.  I constructed the **adult_panel** csv file by merging together the first three waves of the study *(Note: The fourth wave of the study was not available during the time of my internship)*.  I also constructed a smoking status variable for each wave based on our five smoking behavior classifications. 
 
-I loaded this dataset into R.  I only kept three variables: PERSONID , which is the unique ID of each respondent, and the three smoking category variables (one for each wave). 
+I loaded this dataset into R.  I only kept three variables: PERSONID , which is the unique ID of each respondent, and the three smoking category variable, one for each wave. 
  
 ```{r load_adult_panel}
 dta_raw <- read.csv("../../../data/adult_panel.csv", stringsAsFactors = TRUE) 
@@ -143,13 +144,17 @@ glimpse(dta)
 
 ```
 
-#### Note on Survey Weights
-I also only kept complete cases, i.e. adults who participated in all of the first three waves of the study.  I did this for simplicity.  However, it's important to note that to make valid inferences to the general population, we would need to adjust these numbers using survey weights.  These survey weights are available in the original files. These survey weights would also allow us to adjust for item non-response and attrition.  In the future, I plan to create another diagram that adjusts each flow by the survey weights.  In the meantime, using raw counts will help give us a rough estimate of smoking transition over time and allow us to demonstrate the steps needed to construct a Sankey Diagram on Flourish Studio.  I've included a brief explanation of the [Survey Weighting ](#survey_weights) process at the end of this post. 
+### Note on Survey Weights
+I also only kept complete cases, i.e. adults who participated in each of the first three waves of the survey.  I did this for simplicity.  However, it's important to note that to make valid inferences about the general population, we would need to adjust these numbers using survey weights.  These survey weights are available in the original files. The survey weights would also allow us to adjust for item non-response and attrition. 
+
+In the future, I plan to create another diagram that adjusts each flow by the survey weights.  In the meantime, using raw counts will help give us a rough estimate of smoking transition over time and allow us to demonstrate the steps needed to construct a Sankey Diagram on Flourish Studio.  I've included a brief explanation of the [Survey Weighting ](#survey_weights) process at the end of this post. 
 
 
-## Transposing Data
+## Step 2: Transpose the Data
 
-Now that we've loaded the data into R, we need to transpose the dataset into a "long" format. Each row now represents a respondent's smoking status in a particular wave.  We can use the pivot_longer() from the tidyverse library.  By setting the cols parameter to "- PERSONID", we can pivot all the columns to a long format except the PERSONID column.  Now the *name* column represents the original variable name and the value represents the status for each smoker PERSONID during the wave indicated in the *name* column.For example, the first three columns represent the smoking status of respondent "P000000004" across the first three waves of the study.  We can observe that this individual reported being a "never smoker" during the first three waves of the study.  
+Now that we've loaded the data into R, we need to transpose the dataset into a "long" format. Each row will now represent a respondent's smoking status in a particular wave.  To transpose the data, we can use the pivot_longer() function from the tidyr package.  By setting the cols parameter to "- PERSONID", we can pivot all the columns to a long format except the PERSONID column.  
+
+In our new dataset, the **name** column represents the original variable name and the **value** column represents the status for each respondent during the wave indicated in the **name** column.  For example, the first three columns represent the smoking status of respondent *P000000004"* across the first three waves of the study.  We can observe that this individual reported being a "never smoker" in all three waves.   
 
 ```{r dta_transpose}
 dta_long <- dta %>%  
@@ -159,7 +164,7 @@ dta_long %>%  head
 
 ```
 
-Next we need to convert the "name" column into an integer.  I used the string subset command from the stringr to extract the wave number from the "name" column.  We can then drop the original name column.
+Next we need to convert the **name** column into an integer.  I used the str_sub() function from the stringr package to extract the wave number from the **name** column.  We can then drop the original column.
 
 ```{r dta_convert_wave_to_integer}
 dta_long <- dta_long %>% 
@@ -171,9 +176,8 @@ dta_long %>%  head
 ```
 
 
-#### Source Data Subset
-
-The next step is to create two separate datasets: one for the source data and one for the target data.  We can create the source dataset by dropping the latest wave.  We then rename the value variable to "source" and the wave variable to "step_from". 
+## Step 3: Create Source Dataset
+The next step is to create two separate datasets: one for the source data and one for the target data.  We can create the source dataset by dropping the latest wave.  We exclude the latest wave because the rows in the source dataset represent the starting point of each flow.   After we remove the latest wave, we can rename the value variable to **source** and the wave variable to **step_from**. 
 ```{r dta_source}
 #drop the last wave
 dta_source <- dta_long %>% 
@@ -183,11 +187,9 @@ dta_source <- dta_long %>%
 dta_source %>%  head
 ```
 
-The rows in this dataset represent the starting point of each flow.  Consequently, we exclude the latest wave, which at the time of my internship was wave 3. 
 
-#### Target Dataset
-
-Next I created a "Target" dataset, which i the endpoint of each flow. We can create this dataset by dropping the first wave from the dataset.  I renamed the value column to "target" and the wave column to "step_to", which respectively represent the value and time at the end of each flow. I also renamed the PERSONID column to avoid duplication.  
+## Step 4: Create Target Dataset
+Next I created a **Target** dataset, which contains the endpoint of each flow. We can create this dataset by dropping the first wave from the original dataset.  I renamed the value column to **target** and the wave column to **step_to**.  These two columns represent the value and time at the end of each flow. Finally, I renamed the PERSONID column to avoid duplication.
 
 ```{r dta_target}
 #Drop first wave
@@ -200,9 +202,9 @@ dta_target <- dta_long %>%
 dta_target %>%  head
 ```
 
-#### Appending the Datasets
+## Step 5: Append the Datasets
 
-Now we can append the Source and  Target datasets using the cbind() function. 
+After we create the Source and Target datasets,  we can append them using the cbind() function.   In our new dataset, each row represents a transition for a particular respondent across two consecutive waves.  
 ```{r append_source_target}
 
 
@@ -215,19 +217,17 @@ dta_sankey %>%  head
 
 ```
 
-
-
 ### Checking Append Step
 
 We can check our append step by making sure that each row now represents a step between two consecutive stages. 
-```{r}
+```{r check_append_consecutive_steps}
 mean(dta_sankey$step_to - dta_sankey$step_from == 1)
 
 ```
 
 We should also make sure that in each row the PERSONID from the source dataset matches the PERSONID from the target dataset. 
-```{r}
-mean(dta_sankey$PERSONID == dta_sankey$PERSONID_target)
+```{r check_append_same_PERSONID}
+mean(dta_sankey$PERSONID == dta_sankey$PERSONID_2)
 ```
 
 
@@ -238,24 +238,24 @@ Now we can explore some rows to provide some context.
 
 Here we can see six respondents who never smoked at Wave 1 but became current established smokers by Wave 2.
 
-```{r}
+```{r never_smoker_to_current_est_smoker}
 dta_sankey %>%  
   filter(source =='never_smoker' & target == 'current_est_smoker' & step_from == 1  & step_to ==2)  %>% 
   head
 ```
 
-Here we can see six respondents who were current established smokers at Wave 2 who became former smokers by Wave 3.
+Here we can observe six respondents who were current established smokers at Wave 2 who became former smokers by Wave 3.
 
-```{r w1_cur_est_smoker_w3_former_smoker}
+```{r w2_cur_est_smoker_to_w3_former_smoker}
 dta_sankey %>%  
   filter(source =='current_est_smoker' & target == 'former_est_smoker' & 
            step_from == 2  & step_to ==3)  %>% 
   head
 ```
 
-Note that some smoking transitions are impossible.  For example, an established or experimental smoker cannot become transfer back to being a non-smoker. 
+Note that some smoking transitions are impossible.  For example, an established or experimental smoker can never go back to being a never smoker. 
  
-```{r}
+```{r est_smoker_to_never_smoker}
 dta_sankey %>%  
   filter(source %in% c('current_est_smoker', 
                        'former_est_smoker', 
@@ -266,7 +266,7 @@ dta_sankey %>%
  
 Furthermore, established smokers can never become experimental smokers again.  Once you've passed the 100-cigarette threshold, there's no going back!
 
-```{r}
+```{r est_smoker_to_exp_smoker}
 dta_sankey %>%  
   filter(source %in% c('current_est_smoker', 'former_est_smoker'),
          target == c('current_exp_smoker', 'former_exp_smoker') )
@@ -274,7 +274,7 @@ dta_sankey %>%
 
 However, never smokers can become experimental smokers, and experimental smokers can become established smokers. 
 
-```{r}
+```{r never_smoker_to_cur_smoker}
 dta_sankey %>% 
   filter(source == 'current_exp_smoker', target == 'current_est_smoker') %>% 
   head
@@ -282,15 +282,15 @@ dta_sankey %>%
 
 In addition, you can transition back and forth between being a former smoker and current smoker.
 
-```{r}
+```{r former_smoker_to_cur_smoker_and_relapse}
 dta_sankey %>% 
   filter(str_detect(source, 'est_smoker$'), str_detect(target, 'est_smoker$'), source != target) %>% 
   head()
 ```
 
-### Grouping and Summarizing the Data
+## Step 6: Group and Summarize the Data
 
-The last step before uploading our dataset is to aggregate the data.  The final dataset will not be on the  individual-level but should represent each flow in the dataset.  We can accomplish this using the group_by() and summarize() functions. 
+The last step before uploading our dataset is to aggregate the data.  We can accomplish this using the group_by() and summarize() functions. 
 ```{r aggregate_data}
 dta_sankey_cnt <-dta_sankey %>% 
                     dplyr::group_by(source, target, step_from, step_to) %>% 
@@ -303,11 +303,11 @@ dta_sankey_cnt %>%
   widgetframe::frameWidget()
 ```
 
-There are 34 rows in our new dataset.  Each row represents a transition between two smoking states across two consequent waves. The number in the value column indicates the number of respondents in each flow.  For example, there were 889 respondents who went from being "current established smokers" to "former established smokers" from wave 1 to wave 2 (indicated by the step_to and step_from columns). 
+There are 34 rows in our new dataset.  Each row represents a transition between two smoking states across two consequent waves. The number in the value column indicates the number of respondents in each flow.  For example, there were 889 respondents who went from being "current established smokers" to "former established smokers" from Wave 1 to Wave 2 (indicated by the **step_to** and **step_from** columns). 
 
-# Exporting and Uploading Data to Flourish Studio
+## Step 7: Export and Upload Data to Flourish Studio
 
-Now that our data is in the shape we need, we can upload it to Flourish studio. First we can use export the data as a csv file.
+Now that our dataset is in the shape we need, we can upload it to Flourish studio. First we can use export the data as a csv file.
 
 ```{r export_data}
 write_csv(dta_sankey_cnt, "../../../data/path_sankey.csv")
@@ -318,10 +318,10 @@ Next we can log on to our Flourish studio account and use the following steps to
 #### Uploading Data to Flourish Studio
 1. Click the muti-stage alluvial plot under the Sankey Diagram visualization.
 2. Click the data button above the diagram
-3. Click the "Upload Data' on the right
+3. Click the "Upload Data" on the right
 4. Select the file containing your data.  
 
-Flourish should automatically recognize the correct columns in your dataset if you have arranged the them  in the following order: Source, Tareet, Value, Step From, Step to. You can use the control panel in the right sidebar to make any necessary corrections.  If everything looks okay, click the "Preview" button. 
+Flourish should automatically recognize the correct columns in your dataset if you have arranged them in the following order: Source, Target, Value, Step From, Step to. You can use the control panel in the right sidebar to make any necessary corrections.  If everything looks okay, click the "Preview" button. 
 
 And voila, we now have a Sankey plot!  
 
@@ -331,32 +331,40 @@ We can give our Sankey plot a name by clicking on the top of the page.  Finally,
 
 # Using our Sankey Diagram to Explore Cigarette Smoking Patterns over Time
 
-The first thing I noticed was that the thickest line from each state flows the same state in the next wave.  Your most likely state in the next wave of the study is your state in the current wave of the study. 
+The first thing I noticed was that the thickest line from each state flows into the same state in the next wave.  In other words, your most likely state in the next wave  is your state in the current wave. 
 
 Another thing that I noticed was that the "never smokers" flow seemed to be the most stable.  Never smokers in Wave 1 tended to stay never-smokers in Waves 2 and 3.  This stability is likely to due to the fact that all the respondents were over the age of 18 during the first wave of the study.  Adults who are never smokers do not tend to take up smoking later in life.  For this reason, it would also be interesting to explore the Youth survey to investigate how respondents under the age of 18 started to experiment with cigarette smokers.
 
-We were also interested in exploring relapse rates among former established smokers over time.  From Wave 1 to Wave 2 about 12% (432 out 3,607) of former established smokers relapsed.  About the same proportion (12.4% or 521 out of 4,437 to be exact) relapsed between Waves 2 and 3. 
+We were also interested in exploring relapse rates among former established smokers over time.  From Wave 1 to Wave 2, about 12% (432 out 3,607) of former established smokers relapsed. 
 
-
-```{r sankey_relapse_image_1, echo=FALSE, fig.cap="Wave 1 to Wave 2 Relapse among Former Established Smokers", fig.align="center"}
+```{r  echo=FALSE, fig.cap="Wave 1 to Wave 2 Relapse among Former Established Smokers", fig.align="center"}
 
 knitr::include_graphics("/img/sankey_relapse_w1_w2.png",error =FALSE)
 
 ```
 
-
-```{r sankey_relapse_image_2, echo=FALSE,  fig.cap="Wave 2 to Wave 3 Relapse among Former Established Smokers", fig.align="center"}
+ About the same proportion (12.4% or 521 out of 4,437 to be exact) relapsed between Waves 2 and 3. 
+ 
+```{r echo=FALSE,  fig.cap="Wave 2 to Wave 3 Relapse among Former Established Smokers", fig.align="center"}
 knitr::include_graphics("/img/sankey_relapse_w2_w3.png",error =FALSE)
 
 ```
 
 
 # Conclusion
-Creating a Sankey Diagram is a great way to explore transitions over time.  For example, upon viewing the Sankey diagram, it becomes clear that the never smokers category is remarkably stable over time.  I look forward to create ore Sankey diagrams to explore other longitudinal datasets.
+Creating a Sankey Diagram is a great way to explore transitions over time.  For example, upon viewing the Sankey diagram, it becomes clear that the never smokers category is remarkably stable over time.  I look forward to create more Sankey diagrams to explore other longitudinal datasets.
 
-# Next Steps
+# Recap of Data Processing Steps
+  1. Construct and Load PATH dataset
+  2. Transpose Data
+  3. Create Source Dataset
+  4. Create Target Dataset
+  5. Append Source and Target Data
+  6. Group and Summarize Data
+  7. Export Data as csv and Upload to Flourish Studio
 
-Finally, I have a few additional ideas of things to do with the PATH data.  Some of these would be building on the work that I already did during my internship and other ones would be charting new territory. 
+# Future Directions for PATH Data 
+I have a few additional ideas of things to do with the PATH data.  Some of these would be building on the work that I already did during my internship and other ones would be charting new territory. 
 
  1. Add Wave 4 data
  2. Create another Sankey Plot adjusting the value of each flow by the survey weights
@@ -367,57 +375,42 @@ Finally, I have a few additional ideas of things to do with the PATH data.  Some
 
 # Appendix
 
-## Original Datasets
+## A1: Original Datasets
 
 You can download the public-use datasets [here](https://www.icpsr.umich.edu/web/NAHDAP/studies/36498).
 
 The files DS1001, DS2001, DS3001, and DS4001 correspond to waves 1 through 4 of the adult survey. 
 
-Once you download these datasets you can merge them by the variable PERSONID. This creates a "wide" dataset in which each column contained a particular variable from a single wave.  In my *adult_panel* dataset, I added a suffixes (w1, w2, w3) indicating which wave each variable comes from.The original variable names include the prefix R01, R02, R03, and R04 where "R" refers to the adult survey and the numbers refer to the particular wave.  
+Once you download these datasets you can merge them by the variable PERSONID. This creates a "wide" dataset in which each column contains a particular variable from a single wave.  In my *adult_panel* dataset, I added suffixes (w1, w2, w3)  to indicate which wave each variable comes from.  The original variable names include the prefix R01, R02, R03, and R04 where "R" refers to the adult survey and the numbers refer to the corresponding waves.  
 
-### Original Variables 
-The dataset includes the original questions used to derive each smoking category as well as series of derived indicator variables for each category.
-1. R01R_A_CUR_ESTD_CIGS: Wave 1 Current Established Smokers 
-2. R01R_A_CUR_EXPR_CIGS: Wave 1 Current Experimental Smokers
-3. R01R_A_FMR_ESTD_CIGS: Wave 1 Former Established Smokers 
-4. R01R_A_FMR_EXPR_CIGS: Wave 1 Former Experimental Smokers
+## A2: Original Variables 
+The dataset includes the original questions used to derive each smoking category as well as a series of derived indicator variables for each category.
 
-The variables in the other datasets have the same name with the number after the initial "R" representing the wave of the study.  The only other differncee  is that the wave 2 and wave 3 "former" smoker categories have a "_REV" suffix, e.g. R02R_A_FMR_ESTD_CIGS_REV represents wave 2 former established smokers. 
+#### Derived Smoking Category Variables
+  1. R01R_A_CUR_ESTD_CIGS: Wave 1 Current Established Smokers 
+  2. R01R_A_CUR_EXPR_CIGS: Wave 1 Current Experimental Smokers
+  3. R01R_A_FMR_ESTD_CIGS: Wave 1 Former Established Smokers 
+  4. R01R_A_FMR_EXPR_CIGS: Wave 1 Former Experimental Smokers
 
-To find wave 1 never smokers, you can use the variable R01R_A_NVR_CIGS.  To find never smokers in waves 2 and 3, you can use the completment of R02R_A_EVR_CIGS and   R03R_A_EVR_CIGS.
+The variables in the other datasets have the same name with the number after the initial "R" representing the wave of the study.  The only other difference is that the wave 2 and wave 3 "former" smoker categories have a "_REV" suffix, e.g. R02R_A_FMR_ESTD_CIGS_REV represents wave 2 former established smokers. 
 
-The dataset also includes indicators for whether  a person was "continuing adult" in a given wave of the study.   However, we can use a inner join to constrain our sample to include only adults from wave 1 who responded in each subsequent wave.  
+To find wave 1 never smokers, you can use the variable R01R_A_NVR_CIGS.  To find never smokers in waves 2 and 3, you can use the R02R_A_EVR_CIGS and R03R_A_EVR_CIGS variables.
 
-### Survey Weighting {#survey_weights}
+The dataset also includes indicators for whether  a person was  a "continuing adult" in a given wave of the study.   However, we can use a inner join to constrain our sample to include only adults from wave 1 who participated in all the subsequent waves ot the study.  
+
+## A3: Survey Weighting {#survey_weights}
 
 The survey actually has a series of weights to adjust for both attrition and non-representativeness of the sample.  The weights take into account several factors.
 
  1. **Complex sampling design:**  As in most surveys, the PATH study used both stratification and clustering sampling methods instead of simple random sampling.  
- 
  2. **Intentional Oversampling:** The PATH survey intentionally over samples people between the ages of 18 and 34 as well as African-American adults.
- 
- 3. **Non-response bias:** The characteristics of respondents may not reflect the population because not everyone
- 
+ 3. **Non-response bias:** Not every one who is contacted agrees to participate in the survey.  The survey weights account for differential response rates.  
  4. **Attrition:** Some respondents end up dropping out of the study after participating in the first wave. 
  
  Click [here](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5299069/) for a full description of the survey weighting process. 
  
-## Multi-state Modeling {#multi-state-modeling}
+## A4: Multi-state Modeling {#multi-state-modeling}
 
-Multi-state modeling is a good tool for estimating the probability of transitioning[Therneau, Crowson, & Atkinson, 2021](https://cran.r-project.org/web/packages/survival/vignettes/compete.pdf]).  Multi-state modeling is essentially a generalization of survival analysis (ibid).  In survival analysis there only two stages, life and death, and you can only transition from the first state to the second. However, in multi-state modeling there can be more than two states and it can be possible to revert.  For example, if we focus cigarette smoking, we can imagine the five states that we used for our Sankey diagram.  In this model, it would be possible to transition back and forth between some states such as between current established smoker and former established smoker. The major assumption is that the the 
+Multi-state modeling is a good tool for estimating the probability of transitioning from one discrete state to another [Therneau, Crowson, & Atkinson, 2021](https://cran.r-project.org/web/packages/survival/vignettes/compete.pdf]).  Multi-state modeling is essentially a generalization of survival analysis (ibid).  However, in survival analysis there are only two stages, life and death, and you can only transition from the first state to the second. 
 
-#### Example of Transition Matrix
-
-```{r create_transition_matrix}
-mat <- matrix(c('p11', 'p12', 'p13', 'p21', 'p22', 'p23', '0', '0', 'p33'), ncol=3)
-rownames(mat) <- c('Current Smoker', 'Former Smoker', 'Never Smoker')
-colnames(mat)  <- c('Current Smoker', 'Former Smoker', 'Never Smoker')
-mat
-```
-The row names represent the state in a wave (*t*) and the column names represent the state in the next wave (*t+1*).  I've removed the established vs. experimental distinction in order to simplify the matrix.  Each element within represents the probability of transitioning from one state to the next between two waves of the study.  For example, p21 represents the probability of a current smoker becoming a former smoker from time *t* to time *t + 1*.  Notice that the first two rows in the third column are equal to zero because current and former smokers cannot become never smokers again.  
-
-Although this example would be an example of discrete-time, multi-state models can also be used in continuous cases.  Also the most common assumptions is these models are that transition probabilities only depend on the current state [Meira-Machado et. al, 2009](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2692556/#:~:text=The%20analysis%20in%20such%20studies,a%20finite%20number%20of%20states.&text=A%20change%20of%20state%20is%20called%20a%20transition%2C%20or%20an%20event).
-
-
-
-
+On the other hand, in multi-state modeling there can be more than two states and it can be possible to revert back to a previous state.  For example, in our study,  it is possible to transition back and forth between being a  current established smoker and a former established smoker. The major assumption of multi-state modeling is that your next state only depends on your current state.  Christopher Jackon's [msm package](https://cran.r-project.org/web/packages/msm/vignettes/msm-manual.pdf) is a good tool for using multi-state modeling in R. 
