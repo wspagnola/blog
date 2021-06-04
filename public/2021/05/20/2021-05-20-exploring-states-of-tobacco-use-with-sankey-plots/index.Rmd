@@ -83,7 +83,7 @@ knitr::include_graphics("/img/Minard.png",error =FALSE)
 
 # Getting the Data in Shape
 
-To create our own Sankey diagram, we decided to use [Flourish Studio](https://flourish.studio/).   Flourish offers a variety of visualizations including three types of Sankey diagrams. We chose the multi-step alluvial Sankey  diagram because each flow is measured at the same time points, namely each wave of the survey.   
+To create our own Sankey diagram, we decided to use [Flourish Studio](https://flourish.studio/).   Flourish offers a variety of interactive visualizations including three types of Sankey diagrams. We chose the multi-step alluvial Sankeydiagram because each flow is measured at the same time points, namely each wave of the survey.   
 
 Before uploading our dataset, we needed to structure it to fit Flourish's specifications.  This is where R comes in handy. The Sankey Diagram dataset should have the following five columns. 
 
@@ -144,8 +144,8 @@ glimpse(dta)
 
 ```
 
-### Note on Survey Weights
-I also only kept complete cases, i.e. adults who participated in each of the first three waves of the survey.  I did this for simplicity.  However, it's important to note that to make valid inferences about the general population, we would need to adjust these numbers using survey weights.  These survey weights are available in the original files. The survey weights would also allow us to adjust for item non-response and attrition. 
+#### <i>Note on Survey Weights</i>
+I only kept complete cases, i.e. adults who participated in each of the first three waves of the survey.  I did this for simplicity.  However, it's important to note that to make valid inferences about the general population, we would need to adjust these numbers using survey weights.  These survey weights are available in the original files. The survey weights would also allow us to adjust for item non-response and attrition. 
 
 In the future, I plan to create another diagram that adjusts each flow by the survey weights.  In the meantime, using raw counts will help give us a rough estimate of smoking transition over time and allow us to demonstrate the steps needed to construct a Sankey Diagram on Flourish Studio.  I've included a brief explanation of the [Survey Weighting ](#survey_weights) process at the end of this post. 
 
@@ -154,7 +154,7 @@ In the future, I plan to create another diagram that adjusts each flow by the su
 
 Now that we've loaded the data into R, we need to transpose the dataset into a "long" format. Each row will now represent a respondent's smoking status in a particular wave.  To transpose the data, we can use the pivot_longer() function from the tidyr package.  By setting the cols parameter to "- PERSONID", we can pivot all the columns to a long format except the PERSONID column.  
 
-In our new dataset, the **name** column represents the original variable name and the **value** column represents the status for each respondent during the wave indicated in the **name** column.  For example, the first three columns represent the smoking status of respondent *P000000004"* across the first three waves of the study.  We can observe that this individual reported being a "never smoker" in all three waves.   
+In our new dataset, the **name** column represents the original variable name and the **value** column represents the status for each respondent during the wave indicated in the **name** column.  For example, the first three columns represent the smoking status of respondent <i>P000000004</i> across the first three waves of the study.  We can observe that this individual reported being a "never smoker" in all three waves.   
 
 ```{r dta_transpose}
 dta_long <- dta %>%  
@@ -217,7 +217,7 @@ dta_sankey %>%  head
 
 ```
 
-### Checking Append Step
+#### <i>Checking Our Append Step</i>
 
 We can check our append step by making sure that each row now represents a step between two consecutive stages. 
 ```{r check_append_consecutive_steps}
@@ -232,7 +232,7 @@ mean(dta_sankey$PERSONID == dta_sankey$PERSONID_2)
 
 
 
-### Examples of Transitions
+### <i>Examples of Transitions</i>
 
 Now we can explore some rows to provide some context.   
 
@@ -323,11 +323,12 @@ Next we can log on to our Flourish studio account and use the following steps to
 
 Flourish should automatically recognize the correct columns in your dataset if you have arranged them in the following order: Source, Target, Value, Step From, Step to. You can use the control panel in the right sidebar to make any necessary corrections.  If everything looks okay, click the "Preview" button. 
 
-And voila, we now have a Sankey plot!  
+And voila, we now have a Sankey diagram!  
+ 
+# Our Brand New Sankey Diagram!
+<div class="flourish-embed flourish-sankey" data-src="visualisation/6261135"><script src="https://public.flourish.studio/resources/embed.js"></script></div>
 
-<div class="flourish-embed flourish-sankey" data-src="visualisation/6249967"><script src="https://public.flourish.studio/resources/embed.js"></script></div>
-
-We can give our Sankey plot a name by clicking on the top of the page.  Finally, we can click "Export & publish" on the upper right.  You have the options of downloading your diagram or publishing it.  Only publish  your diagram if you're sure that the diagram does not contain any sensitive information (Note: there is an option to require a password to view your Sankey Diagram but this is only available with Flourish's paid business account).  
+We can give our Sankey diagram a name by clicking on the top of the page.  Finally, we can click "Export & publish" on the upper right.  You have the options of downloading your diagram or publishing it.  Only publish  your diagram if you're sure that the diagram does not contain any sensitive information (Note: there is an option to require a password to view your Sankey Diagram but this is only available with Flourish's paid business account).  
 
 # Using our Sankey Diagram to Explore Cigarette Smoking Patterns over Time
 
