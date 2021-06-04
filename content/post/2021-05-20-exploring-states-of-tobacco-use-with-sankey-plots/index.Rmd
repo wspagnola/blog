@@ -11,7 +11,8 @@ categories:
 tags: []
 description: 'Exploring States of Tobacco-Use with Sankey Plots'
 slug: exploring-states-of-tobacco-use-with-sankey-plots
-image-preview: "/img/sankey_relapse_w1_w2.png"
+images:
+- /img/sankey_relapse_w1_w2.png
 ---
 
 ```{css img_css, echo=FALSE}
@@ -83,7 +84,7 @@ knitr::include_graphics("/img/Minard.png",error =FALSE)
 
 # Getting the Data in Shape
 
-To create our own Sankey diagram, we decided to use [Flourish Studio](https://flourish.studio/).   Flourish offers a variety of interactive visualizations including three types of Sankey diagrams. We chose the multi-step alluvial Sankeydiagram because each flow is measured at the same time points, namely each wave of the survey.   
+To create our own Sankey diagram, we decided to use [Flourish Studio](https://flourish.studio/).   Flourish offers a variety of interactive visualizations including three types of Sankey diagrams. We chose the multi-step alluvial Sankey diagram because each flow is measured at the same time points, namely each wave of the survey.   
 
 Before uploading our dataset, we needed to structure it to fit Flourish's specifications.  This is where R comes in handy. The Sankey Diagram dataset should have the following five columns. 
 
