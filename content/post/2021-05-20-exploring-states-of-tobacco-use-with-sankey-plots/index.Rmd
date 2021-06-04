@@ -1,5 +1,5 @@
 ---
-title: "Exploring States of Tobacco-Use with Sankey Plots"
+title: "PATH Data and Sankey Diagrams"
 author: "R package build"
 date: '2021-05-20'
 output:
@@ -9,7 +9,7 @@ categories:
 - data-analysis
 - data-visualization
 tags: []
-description: 
+description: "Exploring States of Tobacco-Use with Sankey diagrams"
 slug: exploring-states-of-tobacco-use-with-sankey-plots
 images:
 - /img/sankey_relapse_w1_w2.png
