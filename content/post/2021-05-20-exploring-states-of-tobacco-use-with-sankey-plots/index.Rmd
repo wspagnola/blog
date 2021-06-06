@@ -70,14 +70,14 @@ Our first objective was to create a Sankey Diagram to visualize these transition
 
 Sankey diagrams are named after Captain Matthew Henry Phineas Riall Sankey, https://en.wikipedia.org/wiki/Sankey_diagram, an Irish engineer.  In 1898, Sankey created a diagram of the flow of steam through an engine. 
 
-```{r echo=FALSE, out.width = "300px", out.height = "400px", fig.align= "center", fig.cap= "Original Sankey Diagram (Source: Wikipedia)"}
+```{r sankey, echo=FALSE, out.width = "300px", out.height = "400px", fig.align= "center", fig.cap= "Original Sankey Diagram (Source: Wikipedia)"}
 knitr::include_graphics("/img/steam_engine_sankey.png",error =FALSE)
 
 ```
 
 Another famous example was created by Charles Minard almost 30 years earlier.  Minard's diagram shows the movement of Napoleon's army during his 1812 Russian campaign. In the visualization, the width of the arrow becomes thinner as casualties and desertions diminishes the size of Napoleon's army.
 
-```{r echo=FALSE, fig.cap="Sankey Diagram of Napoleon's Russian Campaign (Source: Wikipedia)", fig.align="center"}
+```{r minard, echo=FALSE, fig.cap="Sankey Diagram of Napoleon's Russian Campaign (Source: Wikipedia)", fig.align="center"}
 knitr::include_graphics("/img/Minard.png",error =FALSE)
 
 ```
@@ -339,7 +339,7 @@ Another thing that I noticed was that the "never smokers" flow seemed to be the 
 
 We were also interested in exploring relapse rates among former established smokers over time.  From Wave 1 to Wave 2, about 12% (432 out 3,607) of former established smokers relapsed. 
 
-```{r  echo=FALSE, fig.cap="Wave 1 to Wave 2 Relapse among Former Established Smokers", fig.align="center"}
+```{r img-sankeyrelapse1, echo=FALSE, fig.cap="Wave 1 to Wave 2 Relapse among Former Established Smokers", fig.align="center"}
 
 knitr::include_graphics("/img/sankey_relapse_w1_w2.png",error =FALSE)
 
@@ -347,7 +347,7 @@ knitr::include_graphics("/img/sankey_relapse_w1_w2.png",error =FALSE)
 
  About the same proportion (12.4% or 521 out of 4,437 to be exact) relapsed between Waves 2 and 3. 
  
-```{r echo=FALSE,  fig.cap="Wave 2 to Wave 3 Relapse among Former Established Smokers", fig.align="center"}
+```{r img-sankeyrelapse2, echo=FALSE, fig.cap="Wave 2 to Wave 3 Relapse among Former Established Smokers", fig.align="center"}
 knitr::include_graphics("/img/sankey_relapse_w2_w3.png",error =FALSE)
 
 ```

@@ -173,14 +173,14 @@ img {
 <h1>A Brief History of Sankey Diagrams</h1>
 <p><a href="https://en.wikipedia.org/wiki/Sankey_diagram#:~:text=Sankey%20diagrams%20are%20a%20type,proportional%20to%20the%20flow%20rate.&amp;text=Sankey%20diagrams%20emphasize%20the%20major,quantities%20within%20defined%20system%20boundaries">Sankey diagrams</a> are a type of flow chart used to model transitions over time. In a Sankey diagram, the proportion of each flow is represented by the width of the arrows.</p>
 <p>Sankey diagrams are named after Captain Matthew Henry Phineas Riall Sankey, <a href="https://en.wikipedia.org/wiki/Sankey_diagram" class="uri">https://en.wikipedia.org/wiki/Sankey_diagram</a>, an Irish engineer. In 1898, Sankey created a diagram of the flow of steam through an engine.</p>
-<div class="figure" style="text-align: center"><span id="fig:unnamed-chunk-1"></span>
+<div class="figure" style="text-align: center"><span id="fig:sankey"></span>
 <img src="/img/steam_engine_sankey.png" alt="Original Sankey Diagram (Source: Wikipedia)" width="300px" height="400px" />
 <p class="caption">
 Figure 1: Original Sankey Diagram (Source: Wikipedia)
 </p>
 </div>
 <p>Another famous example was created by Charles Minard almost 30 years earlier. Minard’s diagram shows the movement of Napoleon’s army during his 1812 Russian campaign. In the visualization, the width of the arrow becomes thinner as casualties and desertions diminishes the size of Napoleon’s army.</p>
-<div class="figure" style="text-align: center"><span id="fig:unnamed-chunk-2"></span>
+<div class="figure" style="text-align: center"><span id="fig:minard"></span>
 <img src="/img/Minard.png" alt="Sankey Diagram of Napoleon's Russian Campaign (Source: Wikipedia)"  />
 <p class="caption">
 Figure 2: Sankey Diagram of Napoleon’s Russian Campaign (Source: Wikipedia)
@@ -443,14 +443,14 @@ dta_sankey_cnt %&gt;%
 <p>The first thing I noticed was that the thickest line from each state flows into the same state in the next wave. In other words, your most likely state in the next wave is your state in the current wave.</p>
 <p>Another thing that I noticed was that the “never smokers” flow seemed to be the most stable. Never smokers in Wave 1 tended to stay never-smokers in Waves 2 and 3. This stability is likely to due to the fact that all the respondents were over the age of 18 during the first wave of the study. Adults who are never smokers do not tend to take up smoking later in life. For this reason, it would also be interesting to explore the Youth survey to investigate how respondents under the age of 18 started to experiment with cigarette smokers.</p>
 <p>We were also interested in exploring relapse rates among former established smokers over time. From Wave 1 to Wave 2, about 12% (432 out 3,607) of former established smokers relapsed.</p>
-<div class="figure" style="text-align: center"><span id="fig:unnamed-chunk-3"></span>
+<div class="figure" style="text-align: center"><span id="fig:img-sankeyrelapse1"></span>
 <img src="/img/sankey_relapse_w1_w2.png" alt="Wave 1 to Wave 2 Relapse among Former Established Smokers"  />
 <p class="caption">
 Figure 3: Wave 1 to Wave 2 Relapse among Former Established Smokers
 </p>
 </div>
 <p>About the same proportion (12.4% or 521 out of 4,437 to be exact) relapsed between Waves 2 and 3.</p>
-<div class="figure" style="text-align: center"><span id="fig:unnamed-chunk-4"></span>
+<div class="figure" style="text-align: center"><span id="fig:img-sankeyrelapse2"></span>
 <img src="/img/sankey_relapse_w2_w3.png" alt="Wave 2 to Wave 3 Relapse among Former Established Smokers"  />
 <p class="caption">
 Figure 4: Wave 2 to Wave 3 Relapse among Former Established Smokers
