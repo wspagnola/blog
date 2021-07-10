@@ -2,13 +2,25 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://wspagnola.netlify.app/2021/05/20/2021-05-20-exploring-states-of-tobacco-use-with-sankey-plots/</loc>
-    <lastmod>2021-05-20T00:00:00+00:00</lastmod>
+    <loc>https://wspagnola.netlify.app/tags/data-visualization/</loc>
+    <lastmod>2021-07-09T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://wspagnola.netlify.app/2021/07/09/2021-07-09-nyc-dem-primary-ranked-choice-voting/</loc>
+    <lastmod>2021-07-09T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://wspagnola.netlify.app/tags/politics/</loc>
+    <lastmod>2021-07-09T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://wspagnola.netlify.app/post/</loc>
-    <lastmod>2021-05-20T00:00:00+00:00</lastmod>
+    <lastmod>2021-07-09T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://wspagnola.netlify.app/tags/</loc>
+    <lastmod>2021-07-09T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://wspagnola.netlify.app/</loc>
+    <lastmod>2021-07-09T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://wspagnola.netlify.app/2021/05/20/2021-05-20-exploring-states-of-tobacco-use-with-sankey-plots/</loc>
     <lastmod>2021-05-20T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://wspagnola.netlify.app/2021/05/19/2021-05-17-unionization-and-naep-data/</loc>
@@ -30,7 +42,5 @@
     <lastmod>2015-04-03T02:13:50+00:00</lastmod>
   </url><url>
     <loc>https://wspagnola.netlify.app/page/main/</loc>
-  </url><url>
-    <loc>https://wspagnola.netlify.app/tags/</loc>
   </url>
 </urlset>

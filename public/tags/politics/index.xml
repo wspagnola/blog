@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>politics on William Spagnola</title>
+    <link>https://wspagnola.netlify.app/tags/politics/</link>
+    <description>Recent content in politics on William Spagnola</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>William Spagnola</copyright>
+    <lastBuildDate>Fri, 09 Jul 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://wspagnola.netlify.app/tags/politics/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>NYC Dem Primary: Ranked Choice Voting</title>
+      <link>https://wspagnola.netlify.app/2021/07/09/2021-07-09-nyc-dem-primary-ranked-choice-voting/</link>
+      <pubDate>Fri, 09 Jul 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://wspagnola.netlify.app/2021/07/09/2021-07-09-nyc-dem-primary-ranked-choice-voting/</guid>
+      <description>NYC Democratic Primary: Ranked Choice Voting Today I created a Sankey diagram based on the last three rounds of the New York City Democratic Mayor Primary. This year’s election was unique because in addition to provoking heated debate, it was the first time NYC used Ranked Choice Voting (RCV).
+The basic premise of RCV is that you get to rank up to 5 candidates in order.</description>
+    </item>
+    
+  </channel>
+</rss>

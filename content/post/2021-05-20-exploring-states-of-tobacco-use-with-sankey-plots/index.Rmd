@@ -1,6 +1,6 @@
 ---
 title: "PATH Data and Sankey Diagrams"
-author: "R package build"
+author: "William Spagnola"
 date: '2021-05-20'
 output:
   html_document:
@@ -8,7 +8,9 @@ output:
 categories:
 - data-analysis
 - data-visualization
-tags: []
+tags: 
+- data-analysis
+- data-visualization
 description: "Exploring States of Tobacco-Use with Sankey diagrams"
 slug: exploring-states-of-tobacco-use-with-sankey-plots
 images:

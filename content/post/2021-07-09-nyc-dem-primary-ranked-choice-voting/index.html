@@ -1,0 +1,67 @@
+---
+title: 'NYC Dem Primary: Ranked Choice Voting'
+author: "R package build"
+date: '2021-07-09'
+output:
+  html_document:
+    df_print: paged
+categories:
+- politics
+- data-visualization
+tags:
+- politics
+- data-visualization
+description: Sankey Diagram
+images:
+- /img/nyc_mayor_2021_sankey.png
+slug: nyc-dem-primary-ranked-choice-voting
+---
+
+<script src="{{< blogdown/postref >}}index_files/header-attrs/header-attrs.js"></script>
+<script src="{{< blogdown/postref >}}index_files/htmlwidgets/htmlwidgets.js"></script>
+<script src="{{< blogdown/postref >}}index_files/d3/d3.min.js"></script>
+<script src="{{< blogdown/postref >}}index_files/sankey/sankey.js"></script>
+<script src="{{< blogdown/postref >}}index_files/sankeyNetwork-binding/sankeyNetwork.js"></script>
+
+
+<div id="nyc-democratic-primary-ranked-choice-voting" class="section level1">
+<h1>NYC Democratic Primary: Ranked Choice Voting</h1>
+<p>Today I created a Sankey diagram based on the last three rounds of the New York City Democratic Mayor Primary. This year’s election was unique because in addition to provoking heated debate, it was the first time NYC used <a href="https://www.vox.com/22443775/ranked-choice-voting-explained-new-york-strategy">Ranked Choice Voting (RCV)</a>.</p>
+<p>The basic premise of RCV is that you get to rank up to 5 candidates in order. In each round, the candidate with the least amount of votes is eliminated. If your first choice is eliminated, then your vote will be reallocated to your next preferred candidate among the remaining candidates. This process continues until one candidate receives 5at least 50% of the remaining ballots. Note that if all your candidates have been eliminated, then your ballot is “exhausted” and is not considered in the remaining rounds. You can click the link in the previous paragraph for a more detailed explanation.</p>
+<p>My goal was to recreate a chart from the <a href="https://www.nytimes.com/interactive/2021/06/22/us/elections/results-nyc-mayor-primary.html">New York Times</a>. I used the <a href="https://cran.r-project.org/web/packages/networkD3/networkD3.pdf">networkD3 package</a> and was able to reproduce the diagram to some disagree. However, whereas the original diagram shows the percentages at the end of each round, my chart uses vote count.</p>
+<div id="the-diagram" class="section level2">
+<h2>The Diagram</h2>
+<p>Below is my final diagram. We can see rounds 6, 7, and 8 of the election. If you hover over the nodes (rectangles), you can see the final tally after each round. If you hover over the links between the nodes, you can observe how votes were reallocated as candidates were eliminated. This is one feature that I added that was not in the original NY Times diagram</p>
+<p>Andrew Yang was eliminated in round 7 and Maya Wiley was eliminated in round 8. In round 8, Eric Adams defeated Kathryn Garicia by 8,426 votes. Note that at the bottom in gray there are inactive ballots. These are ballots in which all the candidates listed were eliminated.</p>
+</div>
+<div id="nyc-2021-mayoral-democratic-primary" class="section level2">
+<h2>NYC 2021 Mayoral Democratic Primary</h2>
+<div id="ranked-choice-results-rounds-6-to-8" class="section level3">
+<h3>Ranked Choice Results: Rounds 6 to 8</h3>
+<div id="htmlwidget-1" style="width:1000px;height:480px;" class="sankeyNetwork html-widget"></div>
+<script type="application/json" data-for="htmlwidget-1">{"x":{"links":{"source":[0,1,2,3,3,3,3,4,5,6,7,7,7,8],"target":[5,6,7,5,6,7,8,8,9,10,9,10,11,11],"value":[316234,222389,237621,37430,43072,15473,39121,26359,353664,265461,49669,129446,73979,65480],"group":["Eric L. Adams","Kathryn A. Garcia","Maya D. Wiley","Andrew Yang","Andrew Yang","Andrew Yang","Andrew Yang","Inactive ballots","Eric L. Adams","Kathryn A. Garcia","Maya D. Wiley","Maya D. Wiley","Maya D. Wiley","Inactive ballots"]},"nodes":{"name":["6 Eric L. Adams","6 Kathryn A. Garcia","6 Maya D. Wiley","6 Andrew Yang","6 Inactive ballots","7 Eric L. Adams","7 Kathryn A. Garcia","7 Maya D. Wiley","7 Inactive ballots","8 Eric L. Adams","8 Kathryn A. Garcia","8 Inactive ballots"],"group":["Eric L. Adams","Kathryn A. Garcia","Maya D. Wiley","Andrew Yang","Inactive ballots","Eric L. Adams","Kathryn A. Garcia","Maya D. Wiley","Inactive ballots","Eric L. Adams","Kathryn A. Garcia","Inactive ballots"]},"options":{"NodeID":"nodeID","NodeGroup":"nodeGroup","LinkGroup":"linkGroup0","colourScale":"d3.scaleOrdinal() .range(['#1f77b4', '#d62728', '#ff7f0e',\n'#2ca02c', '#808080'])","fontSize":7,"fontFamily":null,"nodeWidth":30,"nodePadding":10,"units":"","margin":{"top":null,"right":-150,"bottom":null,"left":null},"iterations":32,"sinksRight":false}},"evals":[],"jsHooks":[]}</script>
+<p>Note that the reason I (and probably the NY Times as well) only included the last three rounds is that more than one candidate was eliminated in the sixth round. Because more than one candidate was eliminated, it’s currently impossible based on the data available to determine how each individual candidate’s ballots were re-allocated.</p>
+</div>
+</div>
+<div id="take-aways-from-diagram" class="section level2">
+<h2>Take Aways from Diagram</h2>
+<p>Sometimes I feel as though Sankey Diagrams get a bad rap. It’s true that they can quickly become junk chart if there are two many nodes. However, I think in this case, the Sankey Diagram really helps to illustrate shifts in the race as candidates were eliminated in the final rounds.</p>
+<div id="garcia-did-not-gain-that-much-on-adams-through-her-alliance-with-yang" class="section level4">
+<h4>Garcia did not gain that much on Adams through her alliance with Yang</h4>
+<p>Toward the end of the campaign, Garcia and Yang formed and alliance. Yang, despite being an early front runner, was eliminated in the sixth round. However, Garcia didn’t gain that much ground on Adams after Yang was eliminated. Garcia won 43,072 of Yang’s votes versus 37,430 that went to Adams. At the end of round 7, Garcia was still behind Adams by 88,203 votes.</p>
+</div>
+<div id="wiley-voters-prefered-garcia-to-adams" class="section level4">
+<h4>Wiley Voters prefered Garcia to Adams</h4>
+<p>After Wiley was eliminated in the final round, most of her votes were reallocated to Garcia (n = 129,446, 51.1%). This result is unsurprising given that Garcia’s public safety/police reform position was between Wiley and Adams.</p>
+</div>
+<div id="many-wiley-voters-did-not-rank-either-garcia-or-adams" class="section level4">
+<h4>Many Wiley Voters did not rank either Garcia or Adams</h4>
+<p>Many Wiley did not rank Garcia or Adams; consequently, their ballots became inactive (n=73,979). While it may be true that Wiley voters had no preference between Garcia and Adams, it also may be true that voters are not yet accustomed to the RCV system. Voters may not know the advantage of ranking more than one candidate in case their favorite candidate gets eliminated.</p>
+</div>
+</div>
+<div id="technical-note-comparing-both-diagrams" class="section level2">
+<h2><i>Technical Note: Comparing both Diagrams</i></h2>
+<p>The main difference between our diagrams is that I used vote counts instead of percentages. The percentages are nice because the key to winning the RCV election is to pass the 50% threshold. On the other, using vote counts makes it easier to see how votes are reallocated after each round.</p>
+<p>We could define each flow as the percentage of votes from each eliminated candidate, but I am not sure how to code this. The problem is that we still want the nodes to be defined in terms of the vote share at the end of each round. In general, using different denominators for difference aspects of a table or chart is a challenge for both the coder and the audience.</p>
+</div>
+</div>
