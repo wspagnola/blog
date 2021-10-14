@@ -1,6 +1,6 @@
 ---
-title: Calibration vs. Concordance
-author: R package build
+title: "Calibration vs. Concordance"
+author: "R package build"
 date: '2021-10-11'
 slug: calibration-vs-concordance
 categories: []
@@ -9,15 +9,31 @@ description: ''
 ---
 
 
+# Calibration vs. Concordance: Intro
+
+
+
+## Is Calibration Sufficient for Classification Models? 
+I recently read a [blog post](https://statmodeling.stat.columbia.edu/2020/02/01/forget-about-multiple-testing-corrections-actually-forget-about-hypothesis-testing-entirely/), which prompted a [Twitter conversation](https://twitter.com/rlmcelreath/status/1223962978078396416) about the importance of calibration in classification models.  The conversation was intitiated based on this post from (538)[https://projects.fivethirtyeight.com/checking-our-work/] describing the calibration of their models using plots. 
+
+I am not going to argue whether or not 538's specific use of calibration is a good way to evaluate their models.  However, it is true that calibration is not sufficient for many applications in which the goal is discrimination (what I'm calling concordance to avoid the other negative meaning of the word).  Jonathan Bartlett has an excellent [blog post](https://thestatsgeek.com/2014/05/05/area-under-the-roc-curve-assessing-discrimination-in-logistic-regression/) on why calibration may not be sufficient for classification models.  I highly recommend that you read that post but the tdlr it's possible to create a model that is well-calibrated but it omits a lot of information about that is predictive of the outcome.  For example, a null model (one with out any covariates) may be well calibrated but wouldn't be very useful.  Essentially, the model would simply predict the base rate of the outcome, which would be less useful than a model that used some information in order to 
+
+## When Concordance is Not Sufficient
+Nevertheless, many statisticians posted replies that pushed back on the idea that calibration is overrated.  For example, calibration can be very important in some applications particularly, when you're trying to make a decision based on a cost / benefit analysis.  Consequently, calibration can be especially useful in medicine (e.g. deciding whether a given intervention riskier than not performing it) or in the business (e.g. offering a discount to customers to prevent them from leaving).  
+
+One example of when concordance may not be sufficient is when their a uniform shift in the probability of the outcome.  This phenonmen actually occured in my own work, when building a logistic regression model to predict the risk of high school dropout based on middle school grades and attendance.  I built the model by training on a particular cohort and then testing the model on several subsequent.  I arrived at an AUC of .87 both in the training data and the test data, indicating that the model performed well out of sample.  However, while the training data was well calibrated, the model overestimated the dropout rate in the test data.  How can this be?
+
+
+# Exploring Calibration and Concordance: A Simulation
+
+
+### Set  Up 
+Here I define a logistic function to convert log odds to probabilities.  I also created a calibration plot function.  I think there are 
+
 ```{r}
 
 library(pROC)
 
-```
-
-
-### Set Global Variables and Function 
-```{r}
 
 logistic <- function(x) 1 / (1 + exp(-x)) # logistic function for converting log odds to probabilities
 
@@ -39,24 +55,62 @@ n <- 1e3 # Set sample size
 
 ```
 
+
+## Generate Data
+
+I generated two predictors from a standardized normal distribution.  I used these two predictor variables plus random noise to generate the log odds of my outcome.
+
+$$ log odds (y) = B_{1} X_{1} + B_{2} x_{2} +\epsilon $$
+
 ```{r}
 
 # Generate Data
 x1 <- rnorm(n) # predictor variable
 x2 <- rnorm(n)  # predictor variable
 logit_y <- 2*x1 + x2  +  rnorm(n) # log odds of outcome
+
+```
+
+Next I used my logistic function to convert 
+
+```{r}
 pr_y <- logistic(logit_y) #probability of outcome
 y <- rbinom(n, 1, pr_y) # actual outcome
 dta <- data.frame(y, x1, x2) # store as dta frame
+```
 
+
+## Build and Evaulate model from Training Data Years
+The data represented 
+
+I used logistirc regression to predict the probabilities of each 
+
+```{r}
 # Build and Evaulate Model
 mod0 <- glm(y~ x1 + x2, dta, family = "binomial") # fit model
 dta$y_hat <- predict(mod0, type = 'response') # predict probabilities given predictors
+```
+
+## Evaluating Model in Training Years
+I used the roc function from the pROC library to create a roc object.  Then I plotted the 
+
+```{r}
 roc0 <- roc(dta, "y", "y_hat") # create roc object
+
+plot(roc0)
+```
+
+
+As you can see I arrive at a .  As you probably already know, a predictive model with anAUC above .8 is generally considered to be pretty good.  
+```{r}
 auc(roc0) # calculate AUC
 
 ```
 
+
+In the real world, I would probably want to test this model using training/test split to evaluate how the model
+
+## Testing Model
 
 ```{r}
 
@@ -78,6 +132,8 @@ auc(roc1)
 
 ```
 
+
+## Calibration 
 
 
 ```{r}

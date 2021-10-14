@@ -7,7 +7,17 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>William Spagnola</copyright>
-    <lastBuildDate>Fri, 09 Jul 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://wspagnola.netlify.app/post/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 11 Oct 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://wspagnola.netlify.app/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Calibration vs. Concordance</title>
+      <link>https://wspagnola.netlify.app/2021/10/11/2021-10-11-calibration-vs-concordance/</link>
+      <pubDate>Mon, 11 Oct 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://wspagnola.netlify.app/2021/10/11/2021-10-11-calibration-vs-concordance/</guid>
+      <description>Calibration vs. Concordance I recently read a blog post by https://statmodeling.stat.columbia.edu/2020/02/01/forget-about-multiple-testing-corrections-actually-forget-about-hypothesis-testing-entirely/ which prompted a (Twitter conversation)[https://twitter.com/rlmcelreath/status/1223962978078396416] .
+library(pROC) ## Type &amp;#39;citation(&amp;quot;pROC&amp;quot;)&amp;#39; for a citation. ## ## Attaching package: &amp;#39;pROC&amp;#39; ## The following objects are masked from &amp;#39;package:stats&amp;#39;: ## ## cov, smooth, var Set Global Variables and Function logistic &amp;lt;- function(x) 1 / (1 + exp(-x)) # logistic function for converting log odds to probabilities calibrate_plot &amp;lt;- function(y, y_hat, bin_width) { bin_cuts &amp;lt;- seq.</description>
+    </item>
+    
     <item>
       <title>NYC Dem Primary: Ranked Choice Voting</title>
       <link>https://wspagnola.netlify.app/2021/07/09/2021-07-09-nyc-dem-primary-ranked-choice-voting/</link>

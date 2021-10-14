@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html prefix="og: http://ogp.me/ns#">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Calibration vs. Concordance &middot; William Spagnola</title>
+        <meta name="description" content="Calibration vs. Concordance I recently read a blog post by https://statmodeling.stat.columbia.edu/2020/02/01/forget-about-multiple-testing-corrections-actually-forget-about-hypothesis-testing-entirely/ which prompted a (Twitter conversation)[https://twitter.com/rlmcelreath/status/1223962978078396416] .
+library(pROC) ## Type &#39;citation(&quot;pROC&quot;)&#39; for a citation. ## ## Attaching package: &#39;pROC&#39; ## The following objects are masked from &#39;package:stats&#39;: ## ## cov, smooth, var Set Global Variables and Function logistic &lt;- function(x) 1 / (1 &#43; exp(-x)) # logistic function for converting log odds to probabilities calibrate_plot &lt;- function(y, y_hat, bin_width) { bin_cuts &lt;- seq.">
+        <meta name="HandheldFriendly" content="True">
+        <meta name="MobileOptimized" content="320">
+        <meta name="generator" content="Hugo 0.82.0" />
+        <meta name="robots" content="index,follow">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta property="og:title" content="Calibration vs. Concordance">
+<meta property="og:description" content="Calibration vs. Concordance I recently read a blog post by https://statmodeling.stat.columbia.edu/2020/02/01/forget-about-multiple-testing-corrections-actually-forget-about-hypothesis-testing-entirely/ which prompted a (Twitter conversation)[https://twitter.com/rlmcelreath/status/1223962978078396416] .
+library(pROC) ## Type &#39;citation(&quot;pROC&quot;)&#39; for a citation. ## ## Attaching package: &#39;pROC&#39; ## The following objects are masked from &#39;package:stats&#39;: ## ## cov, smooth, var Set Global Variables and Function logistic &lt;- function(x) 1 / (1 &#43; exp(-x)) # logistic function for converting log odds to probabilities calibrate_plot &lt;- function(y, y_hat, bin_width) { bin_cuts &lt;- seq.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://wspagnola.netlify.app/2021/10/11/2021-10-11-calibration-vs-concordance/">
+        <link rel="stylesheet" href="https://wspagnola.netlify.app/dist/site.css">
+        <link rel="stylesheet" href="https://wspagnola.netlify.app/dist/syntax.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,400,600,700,300&subset=latin,cyrillic-ext,latin-ext,cyrillic">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+        
+        
+        
+        
+        
+
+    </head>
+    <body>
+        
+
+        <div id="wrapper">
+            <header class="site-header">
+                <div class="container">
+                    <div class="site-title-wrapper">
+                        
+                            <h1 class="site-title">
+                                <a href="https://wspagnola.netlify.app/">William Spagnola</a>
+                            </h1>
+                        
+                        
+                            <a class="button-square" href="https://wspagnola.netlify.app/index.xml" aria-label="RSS"><i class="fa fa-rss" aria-hidden="true"></i></a>
+                        
+                        
+                            <a class="button-square button-social hint--top" data-hint="Twitter" aria-label="Twitter" href="https://twitter.com/williamspagnola" rel="me" >
+                                <i class="fa fa-twitter" aria-hidden="true"></i>
+                            </a>
+                        
+                        
+                        
+                        
+                            <a class="button-square button-social hint--top" data-hint="Github" aria-label="Github" href="https://github.com/wspagnola" rel="me">
+                                <i class="fa fa-github-alt" aria-hidden="true"></i>
+                            </a>
+                        
+                        
+                        
+                            <a class="button-square button-social hint--top" data-hint="LinkedIn" aria-label="LinkedIn" href="https://linkedin.com/in/william-spagnola-831789169" rel="me">
+                                <i class="fa fa-linkedin" aria-hidden="true"></i>
+                            </a>
+                        
+                        
+                    </div>
+
+                    <ul class="site-nav">
+                        
+    <li class="site-nav-item">
+        <a href="/">Home</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a href="/page/main/">Main Website</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a href="/page/contact/">Contact</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a href="/page/about/">About</a>
+    </li>
+
+
+                    </ul>
+                </div>
+            </header>
+
+            <div id="container">
+
+
+<div class="container">
+    <article class="post-container" itemscope="" itemtype="http://schema.org/BlogPosting">
+        <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">Calibration vs. Concordance</h1>
+    
+    <p class="post-date">
+        <span>Published <time datetime="2021-10-11" itemprop="datePublished">Mon, Oct 11, 2021</time></span>
+        <span>by</span>
+        <span itemscope="" itemprop="author" itemtype="https://schema.org/Person">
+            <span itemprop="name">
+                <a href="#" itemprop="url" rel="author">R package build</a>
+            </span>
+        </span>
+    </p>
+    
+        <p class="post-reading post-line">
+            <span>Estimated reading time: 2 min</span>
+        </p>
+    
+</header>
+
+        <div class="post-content clearfix" itemprop="articleBody">
+    
+
+    
+<script src="https://wspagnola.netlify.app/2021/10/11/2021-10-11-calibration-vs-concordance/index_files/header-attrs/header-attrs.js"></script>
+
+
+<div id="calibration-vs.-concordance" class="section level1">
+<h1>Calibration vs. Concordance</h1>
+<p>I recently read a blog post by <a href="https://statmodeling.stat.columbia.edu/2020/02/01/forget-about-multiple-testing-corrections-actually-forget-about-hypothesis-testing-entirely/" class="uri">https://statmodeling.stat.columbia.edu/2020/02/01/forget-about-multiple-testing-corrections-actually-forget-about-hypothesis-testing-entirely/</a> which prompted a (Twitter conversation)[<a href="https://twitter.com/rlmcelreath/status/1223962978078396416" class="uri">https://twitter.com/rlmcelreath/status/1223962978078396416</a>] .</p>
+<pre class="r"><code>library(pROC)</code></pre>
+<pre><code>## Type &#39;citation(&quot;pROC&quot;)&#39; for a citation.</code></pre>
+<pre><code>## 
+## Attaching package: &#39;pROC&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:stats&#39;:
+## 
+##     cov, smooth, var</code></pre>
+<div id="set-global-variables-and-function" class="section level3">
+<h3>Set Global Variables and Function</h3>
+<pre class="r"><code>logistic &lt;- function(x) 1 / (1 + exp(-x)) # logistic function for converting log odds to probabilities
+
+
+calibrate_plot &lt;- function(y, y_hat,  bin_width) {
+  
+    bin_cuts &lt;- seq.int(0,1, bin_width) # cutoff points for bins
+    mid_pts &lt;- ((bin_cuts + (bin_cuts  +bin_width)) / 2)[-length(bin_cuts)] #mid pt formula (drop last one )
+
+    grp_mids &lt;- cut(y_hat, bin_cuts) # group the predictions into bins for x-axis
+    y_means &lt;-  tapply(y, grp_mids, mean) # calculate the mean of each bin on the response variable for y -axi
+
+    plot(mid_pts,  y_means, xlim = c(0,1), ylim = c(0,1)) #plot y_means over mid points
+    abline(0, 1, lty = &#39;dashed&#39;, col = &#39;red&#39;) # add 45 degree line for reference
+}
+
+
+n &lt;- 1e3 # Set sample size</code></pre>
+<pre class="r"><code># Generate Data
+x1 &lt;- rnorm(n) # predictor variable
+x2 &lt;- rnorm(n)  # predictor variable
+logit_y &lt;- 2*x1 + x2  +  rnorm(n) # log odds of outcome
+pr_y &lt;- logistic(logit_y) #probability of outcome
+y &lt;- rbinom(n, 1, pr_y) # actual outcome
+dta &lt;- data.frame(y, x1, x2) # store as dta frame
+
+# Build and Evaulate Model
+mod0 &lt;- glm(y~ x1 + x2, dta, family = &quot;binomial&quot;) # fit model
+dta$y_hat &lt;- predict(mod0, type = &#39;response&#39;) # predict probabilities given predictors
+roc0 &lt;- roc(dta, &quot;y&quot;, &quot;y_hat&quot;) # create roc object</code></pre>
+<pre><code>## Setting levels: control = 0, case = 1</code></pre>
+<pre><code>## Setting direction: controls &lt; cases</code></pre>
+<pre class="r"><code>auc(roc0) # calculate AUC</code></pre>
+<pre><code>## Area under the curve: 0.8567</code></pre>
+<pre class="r"><code># Generate data for new time frame with slightly different timeframe
+x1&lt;- rnorm(n)
+x2&lt;- rnorm(n)
+logit_y &lt;- -1 + 1.8*x1+ 0.8*x2 + rnorm(n)
+pr_y &lt;- logistic(logit_y)
+y &lt;- rbinom(n, 1 , pr_y)
+dta1 &lt;- data.frame(y,  x1, x2)
+
+
+# Make predictions based on original model 
+dta1$y_hat &lt;- predict( mod0, newdata =dta1, type = &#39;response&#39;)
+
+# Calculate AUC
+roc1 &lt;- roc(dta1, &#39;y&#39;, &#39;y_hat&#39;) </code></pre>
+<pre><code>## Setting levels: control = 0, case = 1</code></pre>
+<pre><code>## Setting direction: controls &lt; cases</code></pre>
+<pre class="r"><code>auc(roc1)</code></pre>
+<pre><code>## Area under the curve: 0.8254</code></pre>
+<pre class="r"><code>calibrate_plot(dta$y, dta$y_hat, 0.05)</code></pre>
+<p><img src="https://wspagnola.netlify.app/2021/10/11/2021-10-11-calibration-vs-concordance/index_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<pre class="r"><code>calibrate_plot(dta1$y, dta1$y_hat, 0.05)</code></pre>
+<p><img src="https://wspagnola.netlify.app/2021/10/11/2021-10-11-calibration-vs-concordance/index_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<pre class="r"><code>mean(dta1[dta1$y_hat &gt; .9 , ]$y)</code></pre>
+<pre><code>## [1] 0.84</code></pre>
+<pre class="r"><code>mean(dta[dta$y_hat &gt; .9 , ]$y)</code></pre>
+<pre><code>## [1] 0.9112903</code></pre>
+</div>
+</div>
+
+</div>
+
+        <footer class="post-footer clearfix"><div class="share">
+            <a class="icon-twitter" href="https://twitter.com/share?text=Calibration%20vs.%20Concordance&url=https%3a%2f%2fwspagnola.netlify.app%2f2021%2f10%2f11%2f2021-10-11-calibration-vs-concordance%2f"
+                onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;" aria-label="Share on Twitter">
+                <i class="fa fa-twitter" aria-hidden="true"></i>
+            </a>
+            <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fwspagnola.netlify.app%2f2021%2f10%2f11%2f2021-10-11-calibration-vs-concordance%2f"
+                onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;" aria-label="Share on Facebook">
+                <i class="fa fa-facebook" aria-hidden="true"></i>
+            </a>
+    </div>
+</footer>
+
+        
+    <div class="comments">
+        
+    </div>
+
+
+
+<div id="disqus_thread"></div>
+<script>
+(function() {
+var d = document, s = d.createElement('script');
+s.src = 'https://approachingsignificance-1.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </article>
+</div>
+
+            </div>
+        </div>
+
+        <footer class="footer">
+            <div class="container">
+                <div class="site-title-wrapper">
+                    <h1 class="site-title">
+                        <a href="https://wspagnola.netlify.app/">William Spagnola</a>
+                    </h1>
+                    <a class="button-square button-jump-top js-jump-top" href="#" aria-label="Back to Top">
+                        <i class="fa fa-angle-up" aria-hidden="true"></i>
+                    </a>
+                </div>
+
+                <p class="footer-copyright">
+                    <span>&copy; 2021 / Powered by <a href="https://gohugo.io/">Hugo</a></span>
+                </p>
+                <p class="footer-copyright">
+                    <span><a href="https://github.com/roryg/ghostwriter">Ghostwriter theme</a> By <a href="http://jollygoodthemes.com">JollyGoodThemes</a></span>
+                    <span>/ <a href="https://github.com/jbub/ghostwriter">Ported</a> to Hugo By <a href="https://github.com/jbub">jbub</a></span>
+                </p>
+            </div>
+        </footer>
+
+        <script src="https://wspagnola.netlify.app/js/jquery-1.11.3.min.js"></script>
+        <script src="https://wspagnola.netlify.app/js/jquery.fitvids.js"></script>
+        <script src="https://wspagnola.netlify.app/js/scripts.js"></script>
+    </body>
+</html>
+

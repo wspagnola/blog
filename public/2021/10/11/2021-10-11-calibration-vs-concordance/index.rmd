@@ -1,0 +1,115 @@
+---
+title: "Calibration vs. Concordance"
+author: "R package build"
+date: '2021-10-11'
+slug: calibration-vs-concordance
+categories: []
+tags: []
+description: ''
+---
+
+
+# Calibration vs. Concordance
+
+
+I recently read a blog post by https://statmodeling.stat.columbia.edu/2020/02/01/forget-about-multiple-testing-corrections-actually-forget-about-hypothesis-testing-entirely/ which prompted a (Twitter conversation)[https://twitter.com/rlmcelreath/status/1223962978078396416] .  
+
+
+```{r}
+library(pROC)
+
+```
+
+
+### Set Global Variables and Function 
+
+
+```{r}
+
+logistic <- function(x) 1 / (1 + exp(-x)) # logistic function for converting log odds to probabilities
+
+
+calibrate_plot <- function(y, y_hat,  bin_width) {
+  
+    bin_cuts <- seq.int(0,1, bin_width) # cutoff points for bins
+    mid_pts <- ((bin_cuts + (bin_cuts  +bin_width)) / 2)[-length(bin_cuts)] #mid pt formula (drop last one )
+
+    grp_mids <- cut(y_hat, bin_cuts) # group the predictions into bins for x-axis
+    y_means <-  tapply(y, grp_mids, mean) # calculate the mean of each bin on the response variable for y -axi
+
+    plot(mid_pts,  y_means, xlim = c(0,1), ylim = c(0,1)) #plot y_means over mid points
+    abline(0, 1, lty = 'dashed', col = 'red') # add 45 degree line for reference
+}
+
+
+n <- 1e3 # Set sample size
+
+```
+
+```{r}
+
+# Generate Data
+x1 <- rnorm(n) # predictor variable
+x2 <- rnorm(n)  # predictor variable
+logit_y <- 2*x1 + x2  +  rnorm(n) # log odds of outcome
+pr_y <- logistic(logit_y) #probability of outcome
+y <- rbinom(n, 1, pr_y) # actual outcome
+dta <- data.frame(y, x1, x2) # store as dta frame
+
+# Build and Evaulate Model
+mod0 <- glm(y~ x1 + x2, dta, family = "binomial") # fit model
+dta$y_hat <- predict(mod0, type = 'response') # predict probabilities given predictors
+roc0 <- roc(dta, "y", "y_hat") # create roc object
+auc(roc0) # calculate AUC
+
+```
+
+
+```{r}
+
+# Generate data for new time frame with slightly different timeframe
+x1<- rnorm(n)
+x2<- rnorm(n)
+logit_y <- -1 + 1.8*x1+ 0.8*x2 + rnorm(n)
+pr_y <- logistic(logit_y)
+y <- rbinom(n, 1 , pr_y)
+dta1 <- data.frame(y,  x1, x2)
+
+
+# Make predictions based on original model 
+dta1$y_hat <- predict( mod0, newdata =dta1, type = 'response')
+
+# Calculate AUC
+roc1 <- roc(dta1, 'y', 'y_hat') 
+auc(roc1)
+
+```
+
+
+
+```{r}
+
+calibrate_plot(dta$y, dta$y_hat, 0.05)
+
+```
+
+
+```{r}
+calibrate_plot(dta1$y, dta1$y_hat, 0.05)
+
+```
+
+
+```{r}
+
+mean(dta1[dta1$y_hat > .9 , ]$y)
+
+
+
+mean(dta[dta$y_hat > .9 , ]$y)
+
+
+```
+
+
+

@@ -1,0 +1,123 @@
+---
+title: "Calibration vs. Concordance"
+author: "R package build"
+date: '2021-10-11'
+slug: calibration-vs-concordance
+categories: []
+tags: []
+description: ''
+---
+
+<script src="{{< blogdown/postref >}}index_files/header-attrs/header-attrs.js"></script>
+
+
+<div id="calibration-vs.-concordance-intro" class="section level1">
+<h1>Calibration vs. Concordance: Intro</h1>
+<div id="is-calibration-sufficient-for-classification-models" class="section level2">
+<h2>Is Calibration Sufficient for Classification Models?</h2>
+<p>I recently read a <a href="https://statmodeling.stat.columbia.edu/2020/02/01/forget-about-multiple-testing-corrections-actually-forget-about-hypothesis-testing-entirely/">blog post</a>, which prompted a <a href="https://twitter.com/rlmcelreath/status/1223962978078396416">Twitter conversation</a> about the importance of calibration in classification models. The conversation was intitiated based on this post from (538)[<a href="https://projects.fivethirtyeight.com/checking-our-work/" class="uri">https://projects.fivethirtyeight.com/checking-our-work/</a>] describing the calibration of their models using plots.</p>
+<p>I am not going to argue whether or not 538’s specific use of calibration is a good way to evaluate their models. However, it is true that calibration is not sufficient for many applications in which the goal is discrimination (what I’m calling concordance to avoid the other negative meaning of the word). Jonathan Bartlett has an excellent <a href="https://thestatsgeek.com/2014/05/05/area-under-the-roc-curve-assessing-discrimination-in-logistic-regression/">blog post</a> on why calibration may not be sufficient for classification models. I highly recommend that you read that post but the tdlr it’s possible to create a model that is well-calibrated but it omits a lot of information about that is predictive of the outcome. For example, a null model (one with out any covariates) may be well calibrated but wouldn’t be very useful. Essentially, the model would simply predict the base rate of the outcome, which would be less useful than a model that used some information in order to</p>
+</div>
+<div id="when-concordance-is-not-sufficient" class="section level2">
+<h2>When Concordance is Not Sufficient</h2>
+<p>Nevertheless, many statisticians posted replies that pushed back on the idea that calibration is overrated. For example, calibration can be very important in some applications particularly, when you’re trying to make a decision based on a cost / benefit analysis. Consequently, calibration can be especially useful in medicine (e.g. deciding whether a given intervention riskier than not performing it) or in the business (e.g. offering a discount to customers to prevent them from leaving).</p>
+<p>One example of when concordance may not be sufficient is when their a uniform shift in the probability of the outcome. This phenonmen actually occured in my own work, when building a logistic regression model to predict the risk of high school dropout based on middle school grades and attendance. I built the model by training on a particular cohort and then testing the model on several subsequent. I arrived at an AUC of .87 both in the training data and the test data, indicating that the model performed well out of sample. However, while the training data was well calibrated, the model overestimated the dropout rate in the test data. How can this be?</p>
+</div>
+</div>
+<div id="exploring-calibration-and-concordance-a-simulation" class="section level1">
+<h1>Exploring Calibration and Concordance: A Simulation</h1>
+<div id="set-up" class="section level3">
+<h3>Set Up</h3>
+<p>Here I define a logistic function to convert log odds to probabilities. I also created a calibration plot function. I think there are</p>
+<pre class="r"><code>library(pROC)</code></pre>
+<pre><code>## Type &#39;citation(&quot;pROC&quot;)&#39; for a citation.</code></pre>
+<pre><code>## 
+## Attaching package: &#39;pROC&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:stats&#39;:
+## 
+##     cov, smooth, var</code></pre>
+<pre class="r"><code>logistic &lt;- function(x) 1 / (1 + exp(-x)) # logistic function for converting log odds to probabilities
+
+
+calibrate_plot &lt;- function(y, y_hat,  bin_width) {
+  
+    bin_cuts &lt;- seq.int(0,1, bin_width) # cutoff points for bins
+    mid_pts &lt;- ((bin_cuts + (bin_cuts  +bin_width)) / 2)[-length(bin_cuts)] #mid pt formula (drop last one )
+
+    grp_mids &lt;- cut(y_hat, bin_cuts) # group the predictions into bins for x-axis
+    y_means &lt;-  tapply(y, grp_mids, mean) # calculate the mean of each bin on the response variable for y -axi
+
+    plot(mid_pts,  y_means, xlim = c(0,1), ylim = c(0,1)) #plot y_means over mid points
+    abline(0, 1, lty = &#39;dashed&#39;, col = &#39;red&#39;) # add 45 degree line for reference
+}
+
+
+n &lt;- 1e3 # Set sample size</code></pre>
+</div>
+<div id="generate-data" class="section level2">
+<h2>Generate Data</h2>
+<p>I generated two predictors from a standardized normal distribution. I used these two predictor variables plus random noise to generate the log odds of my outcome.</p>
+<p><span class="math display">\[ log odds (y) = B_{1} X_{1} + B_{2} x_{2} +\epsilon \]</span></p>
+<pre class="r"><code># Generate Data
+x1 &lt;- rnorm(n) # predictor variable
+x2 &lt;- rnorm(n)  # predictor variable
+logit_y &lt;- 2*x1 + x2  +  rnorm(n) # log odds of outcome</code></pre>
+<p>Next I used my logistic function to convert</p>
+<pre class="r"><code>pr_y &lt;- logistic(logit_y) #probability of outcome
+y &lt;- rbinom(n, 1, pr_y) # actual outcome
+dta &lt;- data.frame(y, x1, x2) # store as dta frame</code></pre>
+</div>
+<div id="build-and-evaulate-model-from-training-data-years" class="section level2">
+<h2>Build and Evaulate model from Training Data Years</h2>
+<p>The data represented</p>
+<p>I used logistirc regression to predict the probabilities of each</p>
+<pre class="r"><code># Build and Evaulate Model
+mod0 &lt;- glm(y~ x1 + x2, dta, family = &quot;binomial&quot;) # fit model
+dta$y_hat &lt;- predict(mod0, type = &#39;response&#39;) # predict probabilities given predictors</code></pre>
+</div>
+<div id="evaluating-model-in-training-years" class="section level2">
+<h2>Evaluating Model in Training Years</h2>
+<p>I used the roc function from the pROC library to create a roc object. Then I plotted the</p>
+<pre class="r"><code>roc0 &lt;- roc(dta, &quot;y&quot;, &quot;y_hat&quot;) # create roc object</code></pre>
+<pre><code>## Setting levels: control = 0, case = 1</code></pre>
+<pre><code>## Setting direction: controls &lt; cases</code></pre>
+<pre class="r"><code>plot(roc0)</code></pre>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p>As you can see I arrive at a . As you probably already know, a predictive model with anAUC above .8 is generally considered to be pretty good.</p>
+<pre class="r"><code>auc(roc0) # calculate AUC</code></pre>
+<pre><code>## Area under the curve: 0.8289</code></pre>
+<p>In the real world, I would probably want to test this model using training/test split to evaluate how the model</p>
+</div>
+<div id="testing-model" class="section level2">
+<h2>Testing Model</h2>
+<pre class="r"><code># Generate data for new time frame with slightly different timeframe
+x1&lt;- rnorm(n)
+x2&lt;- rnorm(n)
+logit_y &lt;- -1 + 1.8*x1+ 0.8*x2 + rnorm(n)
+pr_y &lt;- logistic(logit_y)
+y &lt;- rbinom(n, 1 , pr_y)
+dta1 &lt;- data.frame(y,  x1, x2)
+
+
+# Make predictions based on original model 
+dta1$y_hat &lt;- predict( mod0, newdata =dta1, type = &#39;response&#39;)
+
+# Calculate AUC
+roc1 &lt;- roc(dta1, &#39;y&#39;, &#39;y_hat&#39;) </code></pre>
+<pre><code>## Setting levels: control = 0, case = 1</code></pre>
+<pre><code>## Setting direction: controls &lt; cases</code></pre>
+<pre class="r"><code>auc(roc1)</code></pre>
+<pre><code>## Area under the curve: 0.8117</code></pre>
+</div>
+<div id="calibration" class="section level2">
+<h2>Calibration</h2>
+<pre class="r"><code>calibrate_plot(dta$y, dta$y_hat, 0.05)</code></pre>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<pre class="r"><code>calibrate_plot(dta1$y, dta1$y_hat, 0.05)</code></pre>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<pre class="r"><code>mean(dta1[dta1$y_hat &gt; .9 , ]$y)</code></pre>
+<pre><code>## [1] 0.8585859</code></pre>
+<pre class="r"><code>mean(dta[dta$y_hat &gt; .9 , ]$y)</code></pre>
+<pre><code>## [1] 0.9405941</code></pre>
+</div>
+</div>
