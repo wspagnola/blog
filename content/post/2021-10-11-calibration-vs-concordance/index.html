@@ -85,7 +85,7 @@ dta$y_hat &lt;- predict(mod0, type = &#39;response&#39;) # predict probabilities
 <p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
 <p>As you can see I arrive at a . As you probably already know, a predictive model with anAUC above .8 is generally considered to be pretty good.</p>
 <pre class="r"><code>auc(roc0) # calculate AUC</code></pre>
-<pre><code>## Area under the curve: 0.8289</code></pre>
+<pre><code>## Area under the curve: 0.8292</code></pre>
 <p>In the real world, I would probably want to test this model using training/test split to evaluate how the model</p>
 </div>
 <div id="testing-model" class="section level2">
@@ -99,7 +99,7 @@ y &lt;- rbinom(n, 1 , pr_y)
 dta1 &lt;- data.frame(y,  x1, x2)
 
 
-# Make predictions based on original model 
+# Make predictions basexsd on original model 
 dta1$y_hat &lt;- predict( mod0, newdata =dta1, type = &#39;response&#39;)
 
 # Calculate AUC
@@ -107,7 +107,7 @@ roc1 &lt;- roc(dta1, &#39;y&#39;, &#39;y_hat&#39;) </code></pre>
 <pre><code>## Setting levels: control = 0, case = 1</code></pre>
 <pre><code>## Setting direction: controls &lt; cases</code></pre>
 <pre class="r"><code>auc(roc1)</code></pre>
-<pre><code>## Area under the curve: 0.8117</code></pre>
+<pre><code>## Area under the curve: 0.8467</code></pre>
 </div>
 <div id="calibration" class="section level2">
 <h2>Calibration</h2>
@@ -116,8 +116,8 @@ roc1 &lt;- roc(dta1, &#39;y&#39;, &#39;y_hat&#39;) </code></pre>
 <pre class="r"><code>calibrate_plot(dta1$y, dta1$y_hat, 0.05)</code></pre>
 <p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
 <pre class="r"><code>mean(dta1[dta1$y_hat &gt; .9 , ]$y)</code></pre>
-<pre><code>## [1] 0.8585859</code></pre>
+<pre><code>## [1] 0.9423077</code></pre>
 <pre class="r"><code>mean(dta[dta$y_hat &gt; .9 , ]$y)</code></pre>
-<pre><code>## [1] 0.9405941</code></pre>
+<pre><code>## [1] 0.9509804</code></pre>
 </div>
 </div>

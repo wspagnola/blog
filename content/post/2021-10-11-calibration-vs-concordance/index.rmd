@@ -123,7 +123,7 @@ y <- rbinom(n, 1 , pr_y)
 dta1 <- data.frame(y,  x1, x2)
 
 
-# Make predictions based on original model 
+# Make predictions basexsd on original model 
 dta1$y_hat <- predict( mod0, newdata =dta1, type = 'response')
 
 # Calculate AUC
